@@ -1,0 +1,55 @@
+:root {
+    --primary: #177e89;
+    --secondary: #105b60;
+    --accent: #cafcff;
+    --white: #ffffff;
+}
+
+body {
+    min-height: 76.0131556175rem; /* 1.61803398875 ^9 */
+    padding-top: 3.2360679775rem; /* 1.61803398875 ^2 */
+}
+
+nav.navbar.fixed-top {
+    box-shadow: 0px 4px 4px -4px var(--accent);
+    background: #fff;
+}
+
+.offcanvas-container {
+    background-color: var(--primary);
+}
+
+@media screen and (max-width: 768px) {
+    .offcanvas-container {
+        width: 76.0131556175vw;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .offcanvas-container {
+        width: 25vw;
+    }
+}
+
+/*
+ bootstrap overrides 
+*/
+.nav-link {
+    color: var(--white);
+}
+.nav-link:focus,
+.nav-link:hover {
+    color: var(--accent);
+}
+.text-accent {
+    color: var(--accent) !important;
+}
+.text-primary {
+    color: var(--primary) !important;
+}
+.text-secondary {
+    color: var(--secondary) !important;
+}
+.text-white {
+    color: var(--white) !important;
+}
