@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -50,7 +51,7 @@
         <div
           class="offcanvas-header d-flex justify-content-between text-accent"
         >
-          <h4 class="offcanvas-title" id="offcanvas">Lapha</h4>
+          <h4 class="offcanvas-title">Lapha</h4>
           <button
             type="button"
             class="btn"
@@ -66,7 +67,7 @@
             id="menu"
           >
             <li class="nav-item">
-              <a href="#" class="nav-link text-truncate">
+              <a href="index.html" class="nav-link text-truncate">
                 <i class="fs-5 me-4 bi-house"></i
                 ><span class="ms-1 d-inline">Goal</span>
               </a>
@@ -80,34 +81,34 @@
                 aria-expanded="false"
               >
                 <i class="fs-5 me-4 bi-people"></i
-                ><span class="ms-1 d-inline">Personas</span>
+                ><span class="ms-1 d-inline">User Persona</span>
               </a>
               <ul
                 class="dropdown-menu text-small shadow"
                 aria-labelledby="dropdown"
               >
-                <li><a class="dropdown-item" href="#">Persona 1</a></li>
-                <li><a class="dropdown-item" href="#">Persona 2</a></li>
+                <li>
+                  <a class="dropdown-item" href="./persona1.html">Persona 1</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="./persona2.html">Persona 2</a>
+                </li>
               </ul>
             </li>
             <li>
-              <a
-                href="#submenu1"
-                data-bs-toggle="collapse"
-                class="nav-link text-truncate"
-              >
+              <a href="./sketches.html" class="nav-link text-truncate">
                 <i class="fs-5 me-4 bi-pen"></i
                 ><span class="ms-1 d-inline">Sketches</span>
               </a>
             </li>
             <li>
-              <a href="#" class="nav-link text-truncate">
+              <a href="./comparison.html" class="nav-link text-truncate">
                 <i class="fs-5 me-4 bi-pentagon-half"></i
                 ><span class="ms-1 d-inline">Comparisons</span></a
               >
             </li>
             <li>
-              <a href="#" class="nav-link text-truncate">
+              <a href="./technology.html" class="nav-link text-truncate">
                 <i class="fs-5 me-4 bi-tools"></i
                 ><span class="ms-1 d-inline">Technologies</span></a
               >
@@ -119,6 +120,39 @@
         <div class="row">
           <div class="col min-vh-100 p-4">
             <h3>GOAL OF THE APP</h3>
+
+            <div>
+              <p>
+                "Lapha" is the Zulu word for "here" or a word to state the
+                location of a person or thing. Just like the name, the goal of
+                the app is to allow users to monitor what is dear to them, using
+                the application users can monitor their surroundings using their
+                mobile phone as a security camera, with little technical know
+                how.
+              </p>
+
+              <p>
+                Lapha can be used as an easy to setup mobile security camera.
+              </p>
+
+              <p>
+                The application will provide the following core functionalities:
+              </p>
+              <ul class="styled-list">
+                <li>
+                  An interface that allows a user to pair their device with
+                  another device, one as the camera, the other as the viewer.
+                </li>
+                <li>
+                  The application will incorporate AI to perform realtime
+                  intrusion detection.
+                </li>
+                <li>
+                  The application will allow configuration of notifications
+                  based on predefined events.
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -128,6 +162,6 @@
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
     ></script>
-    <script src="./index.js" />
+    <script src="./index.js"></script>
   </body>
 </html>
