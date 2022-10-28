@@ -1,13 +1,16 @@
+@import url("http://fonts.cdnfonts.com/css/sf-pro-display");
+
 :root {
     --primary: #177e89;
     --secondary: #105b60;
-    --accent: #cafcff;
+    --accent: #e0f2f1;
     --white: #ffffff;
 }
 
 body {
-    min-height: 76.0131556175rem; /* 1.61803398875 ^9 */
+    /* min-height: 76.0131556175rem; 1.61803398875 ^9 */
     padding-top: 3.2360679775rem; /* 1.61803398875 ^2 */
+    font-family: "SF Pro Display", sans-serif;
 }
 
 nav.navbar.fixed-top {
@@ -41,6 +44,14 @@ nav.navbar.fixed-top {
 .nav-link:hover {
     color: var(--accent);
 }
+.accordion-button:not(.collapsed) {
+    color: var(--secondary);
+    background-color: var(--accent);
+}
+.accordion-button:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 0.25rem rgba(23, 126, 137, 25%);
+}
 .text-accent {
     color: var(--accent) !important;
 }
@@ -52,4 +63,18 @@ nav.navbar.fixed-top {
 }
 .text-white {
     color: var(--white) !important;
+}
+
+ul.styled-list li {
+    list-style-type: none;
+    margin-left: 0.5em;
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+
+ul.styled-list li::before {
+    content: "—";
+    color: var(--primary);
+    float: left;
+    margin-left: -2em;
 }
