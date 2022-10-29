@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="Olayiwola Odunsi" />
+    <title>Lapha - Mobile App</title>
+
+    <!-- Bootstrap core CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="./style.css" />
+    <meta name="theme-color" content="#7952b3" />
+  </head>
+  <body>
+    <nav class="navbar navbar-default fixed-top">
+      <div>
+        <button
+          class="btn text-primary"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvas"
+          role="button"
+        >
+          <i
+            class="bi bi-list fs-3"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvas"
+          ></i>
+        </button>
+      </div>
+    </nav>
+    <main class="container">
+      <div
+        class="offcanvas offcanvas-start offcanvas-container"
+        tabindex="-1"
+        id="offcanvas"
+        data-bs-keyboard="false"
+        data-bs-backdrop="false"
+      >
+        <div
+          class="offcanvas-header d-flex justify-content-between text-accent"
+        >
+          <h4 class="offcanvas-title" id="offcanvas">Lapha</h4>
+          <button
+            type="button"
+            class="btn"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          >
+            <i class="bi bi-x fs-1 text-accent"></i>
+          </button>
+        </div>
+        <div class="offcanvas-body px-0">
+          <ul
+            class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start"
+            id="menu"
+          >
+            <li class="nav-item">
+              <a href="index.html" class="nav-link text-truncate">
+                <i class="fs-5 me-4 bi-house"></i
+                ><span class="ms-1 d-inline">Goal</span>
+              </a>
+            </li>
+            <li class="dropdown">
+              <a
+                href="#"
+                class="nav-link dropdown-toggle text-truncate"
+                id="dropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="fs-5 me-4 bi-people"></i
+                ><span class="ms-1 d-inline">User Persona</span>
+              </a>
+              <ul
+                class="dropdown-menu text-small shadow"
+                aria-labelledby="dropdown"
+              >
+                <li>
+                  <a class="dropdown-item" href="./persona1.html">Persona 1</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="./persona2.html">Persona 2</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="./sketches.html" class="nav-link text-truncate">
+                <i class="fs-5 me-4 bi-pen"></i
+                ><span class="ms-1 d-inline">Sketches</span>
+              </a>
+            </li>
+            <li>
+              <a href="./comparison.html" class="nav-link text-truncate">
+                <i class="fs-5 me-4 bi-pentagon-half"></i
+                ><span class="ms-1 d-inline">Comparisons</span></a
+              >
+            </li>
+            <li>
+              <a href="./technology.html" class="nav-link text-truncate">
+                <i class="fs-5 me-4 bi-tools"></i
+                ><span class="ms-1 d-inline">Technologies</span></a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col min-vh-100 py-4">
+            <h3 class="text-center mt-4 text-primary">TECHNOLOGIES USED</h3>
+
+            <div class="row">
+              <div class="col-md-12 mt-2">
+                <p class="text-center">
+                  Listed below are the technologies required to build the
+                  application
+                </p>
+
+                <div class="card mt-3 border-accent shadow-primary">
+                  <div class="card-body">
+                    <h5 class="card-title">JavaScript/HTML/CSS</h5>
+                    <p class="card-text">
+                      JavaScript, HTML and CSS are the underlying technologies
+                      that would be used to build the application.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="card mt-2 border-accent shadow-primary">
+                  <div class="card-body">
+                    <h5 class="card-title">Ionic Vue</h5>
+                    <p class="card-text">
+                      Ionic is an open source UI toolkit for building
+                      performant, high-quality mobile apps using web
+                      technologies. Ionic and integration with the Vue.js
+                      frontend framework would be used to implement the core
+                      functions of the application and its interface.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="card mt-3 border-accent shadow-primary">
+                  <div class="card-body">
+                    <h5 class="card-title">WebRTC/WebSocket</h5>
+                    <p class="card-text">
+                      The WebRTC protocol enables Real-Time Communications (RTC)
+                      in the browser. Due to the application's web-based
+                      architecture, WebRTC will be used to facilitate video
+                      streaming. In addition, WebSocket will be used to enable
+                      two-way communication between the Capture Devand the
+                      Gurdiandian Device.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="card mt-3 border-accent shadow-primary">
+                  <div class="card-body">
+                    <h5 class="card-title">Teachable Machine</h5>
+                    <p class="card-text">
+                      The Teachable Machine tool makes building machine learning
+                      models fast, easy. It would be used to create the machine
+                      learning models required by the application.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="card mt-3 border-accent shadow-primary">
+                  <div class="card-body">
+                    <h5 class="card-title">TensorFlowJS</h5>
+                    <p class="card-text">
+                      JavaScript library TensorFlow.js allows machine learning
+                      models to be trained and deployed using JavaScript on the
+                      web. Using TensorFlow.js, machine learning models
+                      generated from Teachable machine would be run within the
+                      application.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./index.js"></script>
+  </body>
+</html>

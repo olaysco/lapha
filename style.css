@@ -64,6 +64,16 @@ nav.navbar.fixed-top {
 .text-white {
     color: var(--white) !important;
 }
+.border-primary {
+    border-color: var(--primary) !important;
+}
+.border-accent {
+    border-color: var(--accent) !important;
+}
+.border-accent:hover,
+.border-accent:focus {
+    border-color: var(--primary) !important;
+}
 
 ul.styled-list li {
     list-style-type: none;
