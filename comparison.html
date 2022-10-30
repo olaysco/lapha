@@ -131,18 +131,36 @@
 
                 <div class="row">
                   <div class="col-6">
-                    <img
-                      src="./images/atHome1.png"
-                      alt="AtHome Security App"
-                      class="img-fluid"
-                    />
+                    <a
+                      href="#"
+                      class="pop"
+                      data-bs-toggle="modal"
+                      data-bs-target="#previewModal"
+                      data-bs-title="AtHome Camera Streaming Application"
+                      data-bs-description="The appliation allows users to stream videos directly to AtHome Cloud."
+                    >
+                      <img
+                        src="./images/atHome1.png"
+                        alt="AtHome Security App"
+                        class="img-fluid"
+                      />
+                    </a>
                   </div>
                   <div class="col-6">
-                    <img
-                      src="./images/atHome2.png"
-                      alt="AtHome Security App"
-                      class="img-fluid"
-                    />
+                    <a
+                      href="#"
+                      class="pop"
+                      data-bs-toggle="modal"
+                      data-bs-target="#previewModal"
+                      data-bs-title="AtHome Camera Monitoring Application"
+                      data-bs-description="The application allows users to monitor a camera directly, and also watch previously saved videos in the application cloud."
+                    >
+                      <img
+                        src="./images/atHome2.png"
+                        alt="AtHome Security App"
+                        class="img-fluid"
+                      />
+                    </a>
                   </div>
                 </div>
               </div>
@@ -217,6 +235,37 @@
           </div>
         </div>
       </div>
+
+      <!-- image modal start -->
+      <div
+        class="modal fade"
+        id="previewModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="myModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              <button type="button" class="close mb-2" data-bs-dismiss="modal">
+                <span aria-hidden="true">&times;</span
+                ><span class="sr-only">Close</span>
+              </button>
+              <div class="row">
+                <div class="col-12">
+                  <img src="" class="image img-fluid" />
+                </div>
+                <div class="col-12">
+                  <h5 class="title mt-2"></h5>
+                  <p class="description"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- image modal end -->
     </main>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
