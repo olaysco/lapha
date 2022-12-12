@@ -1,5 +1,6 @@
 let popElemnts = document.querySelectorAll(".pop");
 let previewBox = document.querySelector("#previewModal");
+
 previewBox.addEventListener("show.bs.modal", function (event) {
   let button = event.relatedTarget;
   let imageSrc = button.querySelector("img").getAttribute("src");
