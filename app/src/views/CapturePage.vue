@@ -13,6 +13,7 @@
           </ion-row>
         </ion-grid>
       </div>
+      <camera-control />
       <div class="stream-overlay" id="stream-overlay">
         <video id="video"></video>
       </div>
@@ -21,6 +22,7 @@
 </template>
 
 <script lang="ts">
+import CameraControl from "../components/capture/CameraControl.vue";
 import {
   IonPage,
   IonContent,
@@ -43,6 +45,7 @@ export default defineComponent({
     IonPage,
     IonButton,
     IonContent,
+    CameraControl,
   },
 
   setup() {
