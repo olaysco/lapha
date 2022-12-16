@@ -1,0 +1,7 @@
+{
+  "name": "lapha",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
