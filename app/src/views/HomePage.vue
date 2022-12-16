@@ -19,7 +19,7 @@
               <ion-icon slot="end" :icon="videocam"></ion-icon>
             </ion-button>
           </ion-nav-link>
-          <ion-button router-link="/guardian" expand="block"
+          <ion-button router-link="/guardian" expand="block" :component="GuardianPage"
             >Guardian Mode <ion-icon slot="end" :icon="eye"></ion-icon>
           </ion-button>
         </div>
@@ -51,6 +51,7 @@ import { videocam, eye, settings } from "ionicons/icons";
 import { defineComponent } from "vue";
 import SettingsPage from "./SettingsPage.vue";
 import CapturePage from "./CapturePage.vue";
+import GuardianPage from "./GuardianPage.vue";
 
 export default defineComponent({
   name: "HomePage",
@@ -75,6 +76,7 @@ export default defineComponent({
       isMobile,
       videocam,
       CapturePage,
+      GuardianPage,
       SettingsPage,
     };
   },
