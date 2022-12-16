@@ -19,7 +19,7 @@
               <ion-icon slot="end" :icon="videocam"></ion-icon>
             </ion-button>
           </ion-nav-link>
-          <ion-button router-link="/guardian" fill="outline" expand="block"
+          <ion-button router-link="/guardian" expand="block"
             >Guardian Mode <ion-icon slot="end" :icon="eye"></ion-icon>
           </ion-button>
         </div>
@@ -83,7 +83,11 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 ion-content {
-  --background: linear-gradient(162deg, rgb(0 0 0 / 80%) 20%, #177e89 100%),
+  --background: linear-gradient(
+      162deg,
+      rgba(0, 0, 0, 0.15) 20%,
+      var(--ion-color-primary) 100%
+    ),
     url("../assets/images/home.svg") no-repeat 100% 100%;
 }
 
@@ -104,7 +108,7 @@ ion-content {
 
   .app-name {
     line-height: 1em;
-    color: #fff;
+    color: var(--ion-text-color);
   }
 }
 
@@ -116,12 +120,12 @@ ion-content {
 
 ion-page,
 ion-app {
-  background-color: #177e89;
+  background-color: var(--ion-color-primary);
 }
 
 ion-footer {
   ion-toolbar {
-    --background: #177e89;
+    --background: var(--ion-color-primary);
   }
   ion-title {
     height: 100%;
