@@ -3,9 +3,26 @@
     <ion-content :fullscreen="true" class="ion-padding">
       <div class="custom-header">
         <div></div>
+        <ion-nav-link router-direction="forward" :component="SettingsPage">
+          <ion-button router-link="/settings" fill="clear">
+            <ion-icon :icon="settings" size="medium"></ion-icon>
+          </ion-button>
+        </ion-nav-link>
       </div>
       <div id="container">
         <h1 class="app-name"><strong>LAPHA</strong></h1>
+
+        <div class="mode-btns">
+          <ion-nav-link router-direction="forward" :component="CapturePage">
+            <ion-button router-link="/capture" expand="full">
+              Capture Mode
+              <ion-icon slot="end" :icon="videocam"></ion-icon>
+            </ion-button>
+          </ion-nav-link>
+          <ion-button router-link="/guardian" fill="outline" expand="block"
+            >Guardian Mode <ion-icon slot="end" :icon="eye"></ion-icon>
+          </ion-button>
+        </div>
       </div>
     </ion-content>
     <ion-footer class="footer ion-no-border ion-no-padding">
@@ -20,22 +37,31 @@
 
 <script lang="ts">
 import {
+  IonIcon,
   IonContent,
+  IonNavLink,
+  IonButton,
   IonPage,
   IonFooter,
   IonToolbar,
   IonTitle,
   isPlatform,
 } from "@ionic/vue";
+import { videocam, eye, settings } from "ionicons/icons";
 import { defineComponent } from "vue";
+import SettingsPage from "./SettingsPage.vue";
+import CapturePage from "./CapturePage.vue";
 
 export default defineComponent({
   name: "HomePage",
   components: {
     IonPage,
+    IonIcon,
     IonTitle,
+    IonButton,
     IonFooter,
     IonContent,
+    IonNavLink,
     IonToolbar,
   },
 
@@ -43,8 +69,13 @@ export default defineComponent({
     const year = new Date().getFullYear();
     const isMobile = isPlatform("ios") || isPlatform("android");
     return {
+      eye,
       year,
+      settings,
       isMobile,
+      videocam,
+      CapturePage,
+      SettingsPage,
     };
   },
 });
@@ -72,8 +103,7 @@ ion-content {
   padding: 0px 16px;
 
   .app-name {
-    font-size: 20px;
-    line-height: 26px;
+    line-height: 1em;
     color: #fff;
   }
 }
