@@ -19,6 +19,13 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
+"@awesome-cordova-plugins/android-permissions@^6.2.0":
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/@awesome-cordova-plugins/android-permissions/-/android-permissions-6.2.0.tgz#4a25d9017df5aa45b30b80498d6126cae37559c1"
+  integrity sha512-jFlBkVmjB19ifzhVyXu4AbZPKrKLGcxaUNDEbK/PeH+AK+MBtzI9/PXphGd3o1Ne9768S2SraBVQMialq6S3Ow==
+  dependencies:
+    "@types/cordova" latest
+
 "@awesome-cordova-plugins/core@^6.2.0":
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/@awesome-cordova-plugins/core/-/core-6.2.0.tgz#51422eb047f5f3e99fb1753eee2c457822e9f1c8"

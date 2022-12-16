@@ -3,3 +3,6 @@ export type Settings = {
   noiseDetection: boolean;
   videoQuality: string;
 };
+export interface HTMLVideoElementWithCaptureStream extends HTMLVideoElement {
+  captureStream(): MediaStream;
+}

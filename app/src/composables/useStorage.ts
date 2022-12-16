@@ -1,5 +1,4 @@
 import { Storage, Drivers } from "@ionic/storage";
-import { onMounted } from "vue";
 import * as CordovaSQLiteDriver from "localforage-cordovasqlitedriver";
 
 export function useStorage() {
@@ -20,10 +19,7 @@ export function useStorage() {
     return new Promise((resolve) => resolve(_storage));
   };
 
-  //   onMounted(initStorage);
-
   const set = async (key: string, value: any) => {
-    console.log(value);
     (await getStorage()).set(key, value);
   };
 

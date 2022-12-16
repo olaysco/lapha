@@ -31,6 +31,7 @@ import {
   flashOff,
   radioButtonOnOutline,
 } from "ionicons/icons";
+import { useCreateCamera } from "../../composables/useCreateCamera";
 export default defineComponent({
   components: {
     IonIcon,
@@ -38,13 +39,29 @@ export default defineComponent({
   },
 
   setup() {
+    const {
+      isCameraOn,
+      isMicOn,
+      isFlashOn,
+      toggleFlash,
+      toggleMic,
+      switchCamera,
+      toggleStream,
+    } = useCreateCamera();
     return {
+      toggleMic,
+      toggleFlash,
+      switchCamera,
       mic,
       micOff,
+      isMicOn,
       reload,
+      isFlashOn,
+      isCameraOn,
       flash,
       square,
       flashOff,
+      toggleStream,
       radioButtonOnOutline,
     };
   },
