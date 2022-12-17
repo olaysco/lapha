@@ -3920,6 +3920,11 @@ csstype@^2.6.8:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.21.tgz#2efb85b7cc55c80017c66a5ad7cbd931fda3a90e"
   integrity sha512-Z1PhmomIfypOpoMjRQB70jfvy/wxT50qW08YXO5lMIJkrdq4yOTR+AW7FqutScmB9NkLwxo+jU+kZLbofZZq/w==
 
+cupertino-pane@^1.3.13:
+  version "1.3.13"
+  resolved "https://registry.yarnpkg.com/cupertino-pane/-/cupertino-pane-1.3.13.tgz#836eab1a72b33b8ecf188e79a42383649e5ab917"
+  integrity sha512-Aq359T3EeUuKWB6tpF2irazHgnxVzvp8SpEXU/tBK369IVl9Lh+K23cI8XMudPBDl9DbGkzb+7z7yQZvbBV1og==
+
 cypress@^8.7.0:
   version "8.7.0"
   resolved "https://registry.yarnpkg.com/cypress/-/cypress-8.7.0.tgz#2ee371f383d8f233d3425b6cc26ddeec2668b6da"
