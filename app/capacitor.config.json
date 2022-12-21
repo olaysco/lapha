@@ -2,5 +2,6 @@
 	"appId": "io.ionic.starter",
 	"appName": "lapha",
 	"webDir": "dist",
+	"npmClient": "yarn",
 	"bundledWebRuntime": false
 }
