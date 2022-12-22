@@ -40,7 +40,7 @@
   </div>
 </template>
 <script lang="ts">
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import { useJoinRTC } from "../../composables/useJoinRTC";
 import { IonButton, IonInput, IonItem, IonList, IonLabel } from "@ionic/vue";
 

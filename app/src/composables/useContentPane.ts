@@ -1,11 +1,12 @@
+import { ref } from "vue";
 import { CupertinoPane } from "cupertino-pane";
 
 export function useContentPane() {
   let pane: any;
+  const showPane = ref<boolean>(false);
 
   const initPane = (element: HTMLElement, parent: HTMLElement | null) => {
     if (pane == null || pane == undefined) {
-      console.log(element, pane);
       pane = new CupertinoPane(element, {
         // parentElement: parent ?? "ion-content",
         backdrop: true,
@@ -20,7 +21,7 @@ export function useContentPane() {
         },
         events: {
           onDrag: () => console.log("Drag event"),
-          onBackdropTap: () => hidePanel,
+          onBackdropTap: () => hidePane,
         },
       });
     }
@@ -29,17 +30,22 @@ export function useContentPane() {
   };
 
   const presentDrawer = async () => {
-    // console.log("killed");
-    // console.log(document.getElementsByClassName("cupertino-pane").length);
+    showPane.value = true;
     await pane.present({ animate: true });
   };
 
-  const hidePanel = async () => {
+  const hidePane = async () => {
     await pane.hide();
   };
 
+  const destroyPane = async () => {
+    pane.destroy({ animate: true });
+  };
+
   return {
+    showPane,
     initPane,
+    destroyPane,
     presentDrawer,
   };
 }

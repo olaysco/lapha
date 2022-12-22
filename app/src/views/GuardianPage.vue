@@ -1,13 +1,13 @@
 <template>
   <ion-page ref="pageRef">
-    <!-- <ion-backdrop :visible="joining"> </ion-backdrop> -->
-    <div class="backdrop-content" v-if="joining">
-      <div class="loader">
-        <ion-label>Establishing Connection</ion-label>
-        <ion-spinner name="crescent"></ion-spinner>
-      </div>
-    </div>
     <ion-content :fullscreen="true" class="ion-padding">
+      <ion-backdrop :visible="joining"> </ion-backdrop>
+      <div class="backdrop-content" v-if="joining">
+        <div class="loader">
+          <ion-label>Establishing Connection</ion-label>
+          <ion-spinner name="crescent"></ion-spinner>
+        </div>
+      </div>
       <ion-grid>
         <ion-row>
           <ion-col></ion-col>
@@ -22,12 +22,12 @@
       <div class="remote-overlay" id="remote-overlay" v-show="hasJoin">
         <video id="remoteTrack" autoplay></video>
       </div>
+      <join-pane ref="joinPaneRef" v-show="showPane" />
     </ion-content>
-    <join-pane ref="joinPaneRef" />
   </ion-page>
 </template>
 <script lang="ts">
-import { onIonViewDidEnter } from "@ionic/vue";
+import { onIonViewDidEnter, onIonViewWillLeave } from "@ionic/vue";
 import { defineComponent, ref } from "vue";
 import {
   IonPage,
@@ -36,7 +36,7 @@ import {
   IonRow,
   IonGrid,
   IonButton,
-  // IonBackdrop,
+  IonBackdrop,
   IonLabel,
   IonSpinner,
 } from "@ionic/vue";
@@ -53,7 +53,7 @@ export default defineComponent({
     IonGrid,
     JoinPane,
     IonButton,
-    // IonBackdrop,
+    IonBackdrop,
     IonLabel,
     IonSpinner,
   },
@@ -62,17 +62,21 @@ export default defineComponent({
     const pageRef = ref<InstanceType<typeof IonPage> | null>(null);
 
     const { joining, hasJoin, joinRTC } = useJoinRTC();
-    const { initPane, presentDrawer } = useContentPane();
+    const { initPane, showPane, presentDrawer, destroyPane } = useContentPane();
     onIonViewDidEnter(() => {
       if (joinPaneRef.value && pageRef.value) {
         const pane = joinPaneRef.value.$refs.cupertinoPane;
         const parent = pageRef.value.$refs.ionPage;
-        console.log(parent);
         initPane(pane as HTMLElement, parent as HTMLElement);
       }
     });
+    onIonViewWillLeave(() => {
+      joining.value = false;
+      destroyPane();
+    });
     return {
       presentDrawer,
+      showPane,
       hasJoin,
       joining,
       joinRTC,
@@ -100,7 +104,8 @@ export default defineComponent({
   }
 }
 ion-backdrop {
-  opacity: 0.9;
+  opacity: 0.5;
+  z-index: 14;
   &.backdrop-hide {
     display: none;
   }
