@@ -1,10 +1,9 @@
 import { ref, toRefs, reactive } from "vue";
 
-const state = reactive({ joining: false, hasJoin: false });
+const state = reactive({ joining: false, hasJoin: false, port: 9090 });
 
 export function useJoinRTC() {
   let socket: WebSocket | null = null;
-  const port = ref<string>("9090");
 
   const joinRTC = async (hostPort: number) => {
     state.joining = true;
@@ -59,7 +58,7 @@ export function useJoinRTC() {
       // replace with port provided by user.
       // also display this port on the host screen.
       // we will eventually replace providing of custom port with scanning of QR.
-      socket = new WebSocket(`ws://localhost:${port.value}`);
+      socket = new WebSocket(`ws://localhost:${state.port}`);
     }
 
     return socket;
