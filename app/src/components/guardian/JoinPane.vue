@@ -1,11 +1,7 @@
 <template>
   <div>
-    <content-pane ref="joinContentPane">
-      <template #trigger="{ presentDrawer }">
-        <ion-button @click="presentDrawer" v-html="`${hasJoin ? 'Joined' : 'Join'}`">
-        </ion-button>
-      </template>
-      <template #content>
+    <div ref="cupertinoPane" class="cupertino-pane ion-padding">
+      <div class="content" hide-on-bottom>
         <div class="pane-header">
           <h1>Manage Connection</h1>
         </div>
@@ -39,27 +35,24 @@
             <ion-button @click="connectHost" :disabled="!portValid">Connect</ion-button>
           </div>
         </div>
-      </template>
-    </content-pane>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
-import { IonButton, IonInput, IonItem, IonList, IonLabel } from "@ionic/vue";
-import ContentPane from "../ContentPane.vue";
+import { computed, defineComponent } from "vue";
 import { useJoinRTC } from "../../composables/useJoinRTC";
+import { IonButton, IonInput, IonItem, IonList, IonLabel } from "@ionic/vue";
 
 export default defineComponent({
   components: {
     IonButton,
     IonInput,
-    ContentPane,
     IonItem,
     IonList,
     IonLabel,
   },
   setup() {
-    const hostPort = ref(9000);
     const portValid = computed(() => {
       return hostPort.value > 1000 && hostPort.value < 65535;
     });
@@ -70,7 +63,7 @@ export default defineComponent({
       await joinRTC(hostPort.value);
     };
 
-    const { hasJoin, joinRTC } = useJoinRTC();
+    const { hasJoin, joinRTC, port: hostPort } = useJoinRTC();
     return {
       hostPort,
       hasJoin,

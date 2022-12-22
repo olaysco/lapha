@@ -1,6 +1,6 @@
 <template>
-  <ion-page>
-    <ion-backdrop :visible="joining"> </ion-backdrop>
+  <ion-page ref="pageRef">
+    <!-- <ion-backdrop :visible="joining"> </ion-backdrop> -->
     <div class="backdrop-content" v-if="joining">
       <div class="loader">
         <ion-label>Establishing Connection</ion-label>
@@ -13,7 +13,8 @@
           <ion-col></ion-col>
           <ion-col size="8"></ion-col>
           <ion-col>
-            <join-pane />
+            <ion-button @click="presentDrawer" v-html="`${hasJoin ? 'Joined' : 'Join'}`">
+            </ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -22,21 +23,25 @@
         <video id="remoteTrack" autoplay></video>
       </div>
     </ion-content>
+    <join-pane ref="joinPaneRef" />
   </ion-page>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
+import { onIonViewDidEnter } from "@ionic/vue";
+import { defineComponent, ref } from "vue";
 import {
   IonPage,
   IonContent,
   IonCol,
   IonRow,
   IonGrid,
-  IonBackdrop,
+  IonButton,
+  // IonBackdrop,
   IonLabel,
   IonSpinner,
 } from "@ionic/vue";
 import { useJoinRTC } from "../composables/useJoinRTC";
+import { useContentPane } from "../composables/useContentPane";
 import JoinPane from "../components/guardian/JoinPane.vue";
 
 export default defineComponent({
@@ -47,16 +52,32 @@ export default defineComponent({
     IonRow,
     IonGrid,
     JoinPane,
-    IonBackdrop,
+    IonButton,
+    // IonBackdrop,
     IonLabel,
     IonSpinner,
   },
   setup() {
+    const joinPaneRef = ref<InstanceType<typeof JoinPane> | null>(null);
+    const pageRef = ref<InstanceType<typeof IonPage> | null>(null);
+
     const { joining, hasJoin, joinRTC } = useJoinRTC();
+    const { initPane, presentDrawer } = useContentPane();
+    onIonViewDidEnter(() => {
+      if (joinPaneRef.value && pageRef.value) {
+        const pane = joinPaneRef.value.$refs.cupertinoPane;
+        const parent = pageRef.value.$refs.ionPage;
+        console.log(parent);
+        initPane(pane as HTMLElement, parent as HTMLElement);
+      }
+    });
     return {
+      presentDrawer,
       hasJoin,
       joining,
       joinRTC,
+      pageRef,
+      joinPaneRef,
     };
   },
 });
