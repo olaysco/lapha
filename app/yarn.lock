@@ -33,6 +33,13 @@
   dependencies:
     "@types/cordova" latest
 
+"@awesome-cordova-plugins/web-socket-server@^6.2.0":
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/@awesome-cordova-plugins/web-socket-server/-/web-socket-server-6.2.0.tgz#473a4d4114f49e6f5bfc748775bd8522da7ce89a"
+  integrity sha512-dhl9nIIFtmOeLfNvAQkLdP1v9ad7ooKdS70hwcgveDRriexZx2DOyjA6fJZYcwl83WjYdmivX2J3ZvmwaEBqvg==
+  dependencies:
+    "@types/cordova" latest
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.18.6", "@babel/code-frame@^7.8.3":
   version "7.18.6"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.18.6.tgz#3b25d38c89600baa2dcc219edfa88a74eb2c427a"
@@ -3693,6 +3700,16 @@ copy-webpack-plugin@^9.0.1:
     normalize-path "^3.0.0"
     schema-utils "^3.1.1"
     serialize-javascript "^6.0.0"
+
+cordova-plugin-android-permissions@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-android-permissions/-/cordova-plugin-android-permissions-1.1.5.tgz#aeecda735c4e5fe39ffc243e67a7a6faa6dd57d4"
+  integrity sha512-oTTV9cCMBqXTCmU+nYRebsP2IQfrtdvl2vYXHjoJgv5NHCIDgY4KFg6kJTcwXQOiymeGXuw0+MTvJJOueAdleA==
+
+cordova-plugin-websocket-server@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-websocket-server/-/cordova-plugin-websocket-server-1.6.0.tgz#5ea95f6b28ad0608150969725759ce972029c497"
+  integrity sha512-41FUXWGOa+jUcft8PUBuibv1AhUT1wRnIt9TIQVFcjV1oDySGZ1oDmGzjtRi//UNEOvTGUPzkHeZfJKJs0TMpA==
 
 cordova-sqlite-storage-dependencies@4.1.0:
   version "4.1.0"
