@@ -24,7 +24,6 @@ export function useJoinRTC() {
       if (msg.offer) {
         try {
           console.log(msg.offer);
-          // const remoteSDP = new RTCSessionDescription(msg.offer);
           await peerConnection.setRemoteDescription(msg.offer);
           const answer = await peerConnection.createAnswer();
           await peerConnection.setLocalDescription(answer);
@@ -55,8 +54,6 @@ export function useJoinRTC() {
 
   const getSignalChanel = (): WebSocket => {
     if (socket == null) {
-      // replace with port provided by user.
-      // also display this port on the host screen.
       // we will eventually replace providing of custom port with scanning of QR.
       socket = new WebSocket(`ws://localhost:${state.port}`);
     }
@@ -82,8 +79,17 @@ export function useJoinRTC() {
     }
   };
 
+  const disconnectRTC = () => {
+    state.hasJoin = false;
+    if (socket != null) {
+      socket.close();
+      socket = null;
+    }
+  };
+
   return {
     ...toRefs(state),
     joinRTC,
+    disconnectRTC,
   };
 }

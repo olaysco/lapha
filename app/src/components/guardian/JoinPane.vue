@@ -14,7 +14,6 @@
             <ion-button color="danger" @click="disconnectRTC">Disconnect</ion-button>
           </div>
           <div class="not-joined" v-else>
-            <!-- <p>Enter the port showing on the host screen below.</p> -->
             <div>
               <ion-list>
                 <ion-item>
@@ -40,7 +39,7 @@
   </div>
 </template>
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+import { computed, defineComponent } from "vue";
 import { useJoinRTC } from "../../composables/useJoinRTC";
 import { IonButton, IonInput, IonItem, IonList, IonLabel } from "@ionic/vue";
 
@@ -56,14 +55,15 @@ export default defineComponent({
     const portValid = computed(() => {
       return hostPort.value > 1000 && hostPort.value < 65535;
     });
-    const disconnectRTC = () => {
-      alert("to disconnect");
-    };
     const connectHost = async () => {
-      await joinRTC(hostPort.value);
+      try {
+        await joinRTC(hostPort.value);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
-    const { hasJoin, joinRTC, port: hostPort } = useJoinRTC();
+    const { hasJoin, joinRTC, disconnectRTC, port: hostPort } = useJoinRTC();
     return {
       hostPort,
       hasJoin,
