@@ -45,13 +45,11 @@ export default defineComponent({
       isFlashOn,
       toggleFlash,
       toggleMic,
-      switchCamera,
       toggleStream,
     } = useCreateCamera();
     return {
       toggleMic,
       toggleFlash,
-      switchCamera,
       mic,
       micOff,
       isMicOn,

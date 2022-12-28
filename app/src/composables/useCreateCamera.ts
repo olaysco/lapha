@@ -1,5 +1,5 @@
 import { HTMLVideoElementWithCaptureStream } from "./../types";
-import { ref, onUnmounted } from "vue";
+import { ref, onUnmounted, reactive, toRefs } from "vue";
 import { isPlatform } from "@ionic/vue";
 import { AndroidPermissions } from "@awesome-cordova-plugins/android-permissions";
 
@@ -8,13 +8,12 @@ type cameraDevice = {
   label: string;
 };
 
+const state = reactive({ isCameraOn: false, isFlashOn: false, isMicOn: false });
+
 export function useCreateCamera() {
-  const isMicOn = ref<boolean>(false);
-  const isCameraOn = ref<boolean>(false);
-  const isFlashOn = ref<boolean>(false);
   const stream = ref<MediaStream>();
   const constraints = ref<Record<string, unknown>>({
-    video: true,
+    video: { facingMode: "environment" },
     audio: true,
   });
 
@@ -26,14 +25,14 @@ export function useCreateCamera() {
       document.getElementById("video")
     );
     stream.value = await navigator.mediaDevices.getUserMedia(constraints.value);
-    isMicOn.value = true;
-    isCameraOn.value = true;
+    state.isMicOn = true;
+    state.isCameraOn = true;
     localVideo.srcObject = stream.value;
     localVideo.play();
   };
 
   const toggleStream = async () => {
-    if (isCameraOn.value) {
+    if (state.isCameraOn) {
       return closeCamera();
     }
 
@@ -41,7 +40,7 @@ export function useCreateCamera() {
   };
 
   const closeCamera = async () => {
-    isCameraOn.value = false;
+    state.isCameraOn = false;
     stream.value?.getTracks().forEach((track) => {
       track.readyState == "live" && track.stop();
     });
@@ -67,13 +66,13 @@ export function useCreateCamera() {
   const toggleMic = function () {
     const track = stream.value?.getAudioTracks()[0];
     if (track) {
-      isMicOn.value = !isMicOn.value;
-      track.enabled = isMicOn.value;
+      state.isMicOn = !state.isMicOn;
+      track.enabled = state.isMicOn;
     }
   };
   const toggleFlash = function () {
     //not yet implemented
-    isFlashOn.value = !isFlashOn.value;
+    state.isFlashOn = !state.isFlashOn;
   };
 
   const performCleanup = () => {
@@ -86,7 +85,7 @@ export function useCreateCamera() {
         if (!result.hasPermission) {
           AndroidPermissions.requestPermissions(permissionName)
             .then(() => {
-              alert("PERMISSION-GIVEN");
+              // alert("PERMISSION-GIVEN");
               resolve(true);
             })
             .catch((err) => {
@@ -102,10 +101,8 @@ export function useCreateCamera() {
   onUnmounted(performCleanup);
 
   return {
+    ...toRefs(state),
     toggleStream,
-    isCameraOn,
-    isFlashOn,
-    isMicOn,
     stream,
     toggleFlash,
     toggleMic,
