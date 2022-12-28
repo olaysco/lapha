@@ -3,13 +3,15 @@ import { ref, onUnmounted } from "vue";
 declare let cordova: any;
 
 export function useHostRTC() {
+  const streaming = ref<boolean>(false);
+  const listeningPort = ref<number>(9090);
   const wsserver = cordova.plugins.wsserver;
   const peerConnections = ref<Map<string, RTCPeerConnection>>(new Map());
   let peer: RTCPeerConnection;
 
   const startServer = () => {
     wsserver.start(
-      9090,
+      listeningPort.value,
       {
         onFailure: function (addr: string, port: string, reason: string) {
           console.log(
@@ -75,6 +77,7 @@ export function useHostRTC() {
     if (msgObject.answer && peer) {
       console.log(msgObject.answer);
       await peer.setRemoteDescription(msgObject.answer);
+      streaming.value = true;
       console.log("aremote connected");
       const dc = peer.createDataChannel("channel");
       dc.onopen = () => {
@@ -113,20 +116,17 @@ export function useHostRTC() {
     };
   };
 
-  const performSetup = () => {
-    setLocalStream();
-    startServer();
-  };
-
   const performCleanup = () => {
-    console.log("unmounting");
     wsserver.stop();
+    streaming.value = false;
     peerConnections.value = new Map();
   };
 
   onUnmounted(performCleanup);
 
   return {
+    streaming,
+    startServer,
     sendMessage,
   };
 }

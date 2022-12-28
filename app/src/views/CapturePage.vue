@@ -7,9 +7,11 @@
             <ion-col></ion-col>
             <ion-col size="8"></ion-col>
             <ion-col
-              ><ion-button router-link="/">
-                <ion-icon :icon="infinite"></ion-icon></ion-button
-            ></ion-col>
+              ><ion-button v-if="!streaming && isCameraOn" @click="startServer">
+                Stream
+              </ion-button>
+              <ion-button v-if="streaming">Stop</ion-button></ion-col
+            >
           </ion-row>
         </ion-grid>
       </div>
@@ -23,24 +25,16 @@
 
 <script lang="ts">
 import CameraControl from "../components/capture/CameraControl.vue";
-import {
-  IonPage,
-  IonContent,
-  IonButton,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonIcon,
-} from "@ionic/vue";
-import { infinite } from "ionicons/icons";
+import { IonPage, IonContent, IonButton, IonGrid, IonRow, IonCol } from "@ionic/vue";
 import { defineComponent } from "vue";
+import { useHostRTC } from "../composables/useHostRTC";
+import { useCreateCamera } from "../composables/useCreateCamera";
 
 export default defineComponent({
   name: "CapturePage",
   components: {
     IonRow,
     IonCol,
-    IonIcon,
     IonGrid,
     IonPage,
     IonButton,
@@ -49,8 +43,12 @@ export default defineComponent({
   },
 
   setup() {
+    const { streaming, startServer } = useHostRTC();
+    const { isCameraOn } = useCreateCamera();
     return {
-      infinite,
+      isCameraOn,
+      streaming,
+      startServer,
     };
   },
 });
