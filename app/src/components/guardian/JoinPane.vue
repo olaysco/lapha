@@ -56,11 +56,7 @@ export default defineComponent({
       return hostPort.value > 1000 && hostPort.value < 65535;
     });
     const connectHost = async () => {
-      try {
-        await joinRTC(hostPort.value);
-      } catch (error) {
-        console.log(error);
-      }
+      await joinRTC();
     };
 
     const { hasJoin, joinRTC, disconnectRTC, port: hostPort } = useJoinRTC();

@@ -1,17 +1,19 @@
-import { ref, toRefs, reactive } from "vue";
+import { toRefs, reactive } from "vue";
+import { toastController } from "@ionic/vue";
 
 const state = reactive({ joining: false, hasJoin: false, port: 9090 });
 
 export function useJoinRTC() {
-  let socket: WebSocket | null = null;
+  let signalChannel: WebSocket | null = null;
 
-  const joinRTC = async (hostPort: number) => {
+  const joinRTC = async () => {
     state.joining = true;
     state.hasJoin = false;
+    getSignalChanel();
     const peerConnection = new RTCPeerConnection();
     peerConnection.onicecandidate = ({ candidate }) => {
       console.log("icecandaidate");
-      getSignalChanel().send(JSON.stringify({ candidate: candidate }));
+      signalChannel?.send(JSON.stringify({ candidate: candidate }));
     };
     peerConnection.addEventListener("iceconnectionstatechange", (e) =>
       console.log(e)
@@ -19,46 +21,56 @@ export function useJoinRTC() {
     peerConnection.addEventListener("track", (e) => {
       handleRemoteTrack(e);
     });
-    getSignalChanel().onmessage = async (ev: MessageEvent): Promise<any> => {
-      const msg = JSON.parse(ev.data);
-      if (msg.offer) {
-        try {
-          console.log(msg.offer);
-          await peerConnection.setRemoteDescription(msg.offer);
-          const answer = await peerConnection.createAnswer();
-          await peerConnection.setLocalDescription(answer);
-          getSignalChanel().send(JSON.stringify({ answer: answer }));
-          console.log("local connected " + peerConnection.connectionState);
-          peerConnection.ondatachannel = (e) => {
-            e.channel.onopen = (e) => console.log("dc opened");
-          };
-          state.hasJoin = true;
-        } catch (error) {
-          console.log(error);
-          console.log("error answering");
-        } finally {
-          state.joining = false;
+    if (signalChannel != null) {
+      signalChannel.onmessage = async (ev: MessageEvent): Promise<any> => {
+        const msg = JSON.parse(ev.data);
+        if (msg.offer) {
+          try {
+            console.log(msg.offer);
+            await peerConnection.setRemoteDescription(msg.offer);
+            const answer = await peerConnection.createAnswer();
+            await peerConnection.setLocalDescription(answer);
+            signalChannel?.send(JSON.stringify({ answer: answer }));
+            console.log("local connected " + peerConnection.connectionState);
+            peerConnection.ondatachannel = (e) => {
+              e.channel.onopen = (e) => console.log("dc opened");
+            };
+            state.hasJoin = true;
+          } catch (error) {
+            console.log(error);
+            console.log("error answering");
+          } finally {
+            state.joining = false;
+          }
         }
-      }
 
-      if (msg.candidate) {
-        console.log("receive ice " + msg.candidate);
-        peerConnection.addIceCandidate(msg.candidate);
-      }
-    };
+        if (msg.candidate) {
+          console.log("receive ice " + msg.candidate);
+          peerConnection.addIceCandidate(msg.candidate);
+        }
+      };
+    }
 
     peerConnection.addEventListener("icecandidate", (e) =>
       handleIceCandidate(peerConnection, e)
     );
   };
 
-  const getSignalChanel = (): WebSocket => {
-    if (socket == null) {
+  const getSignalChanel = (): WebSocket | null => {
+    if (signalChannel == null) {
       // we will eventually replace providing of custom port with scanning of QR.
-      socket = new WebSocket(`ws://localhost:${state.port}`);
+      signalChannel = new WebSocket(`ws://localhost:${state.port}`);
+      signalChannel.onerror = (e) => {
+        console.log(e);
+        if (signalChannel?.readyState == WebSocket.CLOSED) {
+          state.joining = false;
+          signalChannel = null;
+          showError("Unable to establish connection with host, check port.");
+        }
+      };
     }
 
-    return socket;
+    return signalChannel;
   };
 
   const handleIceCandidate = (
@@ -81,10 +93,21 @@ export function useJoinRTC() {
 
   const disconnectRTC = () => {
     state.hasJoin = false;
-    if (socket != null) {
-      socket.close();
-      socket = null;
+    if (signalChannel != null) {
+      signalChannel.close();
+      signalChannel = null;
     }
+  };
+
+  const showError = async (message: string) => {
+    const toast = await toastController.create({
+      message: message,
+      duration: 1500,
+      position: "top",
+      color: "danger",
+    });
+
+    await toast.present();
   };
 
   return {
