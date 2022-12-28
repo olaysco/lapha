@@ -28,7 +28,7 @@
 </template>
 <script lang="ts">
 import { onIonViewDidEnter, onIonViewWillLeave } from "@ionic/vue";
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import {
   IonPage,
   IonContent,
@@ -62,7 +62,13 @@ export default defineComponent({
     const pageRef = ref<InstanceType<typeof IonPage> | null>(null);
 
     const { joining, hasJoin, joinRTC } = useJoinRTC();
-    const { initPane, showPane, presentDrawer, destroyPane } = useContentPane();
+    const { initPane, showPane, presentDrawer, destroyPane, hidePane } = useContentPane();
+
+    watch(hasJoin, (newVal) => {
+      if (newVal) {
+        hidePane();
+      }
+    });
     onIonViewDidEnter(() => {
       if (joinPaneRef.value && pageRef.value) {
         const pane = joinPaneRef.value.$refs.cupertinoPane;

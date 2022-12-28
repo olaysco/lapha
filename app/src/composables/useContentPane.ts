@@ -8,7 +8,6 @@ export function useContentPane() {
   const initPane = (element: HTMLElement, parent: HTMLElement | null) => {
     if (pane == null || pane == undefined) {
       pane = new CupertinoPane(element, {
-        // parentElement: parent ?? "ion-content",
         backdrop: true,
         breaks: {
           top: {
@@ -44,6 +43,7 @@ export function useContentPane() {
 
   return {
     showPane,
+    hidePane,
     initPane,
     destroyPane,
     presentDrawer,
