@@ -5,12 +5,13 @@ const state = reactive({ joining: false, hasJoin: false, port: 9090 });
 
 export function useJoinRTC() {
   let signalChannel: WebSocket | null = null;
+  let peerConnection: RTCPeerConnection | null;
 
   const joinRTC = async () => {
     state.joining = true;
     state.hasJoin = false;
-    getSignalChanel();
-    const peerConnection = new RTCPeerConnection();
+    initSignalChanel();
+    peerConnection = new RTCPeerConnection();
     peerConnection.onicecandidate = ({ candidate }) => {
       console.log("icecandaidate");
       signalChannel?.send(JSON.stringify({ candidate: candidate }));
@@ -21,42 +22,16 @@ export function useJoinRTC() {
     peerConnection.addEventListener("track", (e) => {
       handleRemoteTrack(e);
     });
+
     if (signalChannel != null) {
-      signalChannel.onmessage = async (ev: MessageEvent): Promise<any> => {
-        const msg = JSON.parse(ev.data);
-        if (msg.offer) {
-          try {
-            console.log(msg.offer);
-            await peerConnection.setRemoteDescription(msg.offer);
-            const answer = await peerConnection.createAnswer();
-            await peerConnection.setLocalDescription(answer);
-            signalChannel?.send(JSON.stringify({ answer: answer }));
-            console.log("local connected " + peerConnection.connectionState);
-            peerConnection.ondatachannel = (e) => {
-              e.channel.onopen = (e) => console.log("dc opened");
-            };
-            state.hasJoin = true;
-          } catch (error) {
-            console.log(error);
-            console.log("error answering");
-          } finally {
-            state.joining = false;
-          }
-        }
-
-        if (msg.candidate) {
-          console.log("receive ice " + msg.candidate);
-          peerConnection.addIceCandidate(msg.candidate);
-        }
-      };
+      signalChannel.onmessage = handleSignalMessage;
     }
-
     peerConnection.addEventListener("icecandidate", (e) =>
-      handleIceCandidate(peerConnection, e)
+      handleIceCandidate(<RTCPeerConnection>peerConnection, e)
     );
   };
 
-  const getSignalChanel = (): WebSocket | null => {
+  const initSignalChanel = (): WebSocket | null => {
     if (signalChannel == null) {
       // we will eventually replace providing of custom port with scanning of QR.
       signalChannel = new WebSocket(`ws://localhost:${state.port}`);
@@ -71,6 +46,30 @@ export function useJoinRTC() {
     }
 
     return signalChannel;
+  };
+
+  const handleSignalMessage = async (ev: MessageEvent): Promise<any> => {
+    const msg = JSON.parse(ev.data);
+    if (msg.offer && peerConnection != null) {
+      try {
+        await peerConnection.setRemoteDescription(msg.offer);
+        const answer = await peerConnection.createAnswer();
+        await peerConnection.setLocalDescription(answer);
+        signalChannel?.send(JSON.stringify({ answer: answer }));
+        console.log("local connected " + peerConnection.connectionState);
+        state.hasJoin = true;
+      } catch (error) {
+        console.log(error);
+        console.log("error answering");
+      } finally {
+        state.joining = false;
+      }
+    }
+
+    if (msg.candidate) {
+      console.log("receive ice " + msg.candidate);
+      peerConnection?.addIceCandidate(msg.candidate);
+    }
   };
 
   const handleIceCandidate = (
