@@ -10,14 +10,16 @@
               ><ion-button v-if="!streaming && isCameraOn" @click="startServer">
                 Stream
               </ion-button>
-              <ion-button v-if="streaming">Stop</ion-button></ion-col
+              <ion-button v-if="streaming" @click="performCleanup"
+                >Stop</ion-button
+              ></ion-col
             >
           </ion-row>
         </ion-grid>
       </div>
       <camera-control />
       <div class="stream-overlay" id="stream-overlay">
-        <video id="video"></video>
+        <video id="video" muted></video>
       </div>
     </ion-content>
   </ion-page>
@@ -43,12 +45,13 @@ export default defineComponent({
   },
 
   setup() {
-    const { streaming, startServer } = useHostRTC();
+    const { streaming, startServer, performCleanup } = useHostRTC();
     const { isCameraOn } = useCreateCamera();
     return {
       isCameraOn,
       streaming,
       startServer,
+      performCleanup,
     };
   },
 });

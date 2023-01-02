@@ -128,5 +128,6 @@ export function useHostRTC() {
     streaming,
     startServer,
     sendMessage,
+    performCleanup,
   };
 }
