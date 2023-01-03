@@ -19,7 +19,8 @@
       </div>
       <camera-control />
       <div class="stream-overlay" id="stream-overlay">
-        <video id="video" muted></video>
+        <canvas class="movement-canvas" id="movement-canvas" ref="canvasRef"></canvas>
+        <video id="video" ref="videoRef" muted></video>
       </div>
     </ion-content>
   </ion-page>
@@ -28,9 +29,10 @@
 <script lang="ts">
 import CameraControl from "../components/capture/CameraControl.vue";
 import { IonPage, IonContent, IonButton, IonGrid, IonRow, IonCol } from "@ionic/vue";
-import { defineComponent } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import { useHostRTC } from "../composables/useHostRTC";
 import { useCreateCamera } from "../composables/useCreateCamera";
+import { useDetectMovement } from "../composables/useDetectMovement";
 
 export default defineComponent({
   name: "CapturePage",
@@ -45,9 +47,20 @@ export default defineComponent({
   },
 
   setup() {
+    const canvasRef = ref<HTMLCanvasElement | null>(null);
+    const videoRef = ref<HTMLVideoElement | null>(null);
     const { streaming, startServer, performCleanup } = useHostRTC();
     const { isCameraOn } = useCreateCamera();
+    const { detect } = useDetectMovement();
+
+    onMounted(() => {
+      if (videoRef.value && canvasRef.value) {
+        detect(canvasRef.value, videoRef.value);
+      }
+    });
     return {
+      canvasRef,
+      videoRef,
       isCameraOn,
       streaming,
       startServer,
@@ -71,7 +84,7 @@ export default defineComponent({
     display: block;
     width: 100vw;
     height: 100vh;
-    object-fit: cover;
+    object-fit: contain;
   }
 }
 
@@ -79,5 +92,11 @@ export default defineComponent({
   & ion-content {
     --background: transparent;
   }
+}
+
+.movement-canvas {
+  position: absolute;
+  left: 0;
+  right: 0;
 }
 </style>
