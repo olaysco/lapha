@@ -16,6 +16,9 @@
  * Though, the movement can be as small as an eye wink, or passing insect.
  * we can control the detection sensitivity by specifying the minimum difference
  * we want to see between the channels.
+ *
+ * we can also optimize the difference sensitivity, by specifying the number of pixel
+ * difference beteeen frames.
  */
 
 import { onUnmounted, ref } from "vue";
@@ -60,7 +63,7 @@ export function useDetectMovement() {
     ) {
       canvasContext?.drawImage(video.value, 0, 0, width, height);
       const data = canvasContext?.getImageData(0, 0, width, height).data;
-      let store: number[] = [];
+      let pixelDifference = 0;
       if (data) {
         let movementDetected = false;
         // each pixel is represented by four element, r, g, b & a.
@@ -74,23 +77,13 @@ export function useDetectMovement() {
             Math.abs(previousPixels[i].green - green) > 50 &&
             Math.abs(previousPixels[i].blue - blue) > 50
           ) {
-            movementDetected = true;
-            store = [
-              i,
-              previousPixels[i].red,
-              red,
-              previousPixels[i].green,
-              green,
-              previousPixels[i].blue,
-              blue,
-              data[i + 3],
-            ];
+            pixelDifference++;
           }
           previousPixels[i] = { red, green, blue };
         }
 
-        if (movementDetected) {
-          console.log("movement detected ", store);
+        if (pixelDifference > 1000) {
+          movementDetected = true;
         }
       }
     }
