@@ -28,6 +28,8 @@ export function useDetectMovement() {
   const canvas = ref<HTMLCanvasElement>();
   const video = ref<HTMLVideoElement>();
   const timeoutID = ref<number>(0);
+  let DIFFERENCE_COUNT_THRESHOLD = 100;
+  let DIFFERENCE_THRESHOLD = 50;
 
   const startDetection = () => {
     if (video.value && canvas.value) {
@@ -73,17 +75,18 @@ export function useDetectMovement() {
           const blue = data[i + 2];
           if (
             previousPixels[i] &&
-            Math.abs(previousPixels[i].red - red) > 50 &&
-            Math.abs(previousPixels[i].green - green) > 50 &&
-            Math.abs(previousPixels[i].blue - blue) > 50
+            Math.abs(previousPixels[i].red - red) > DIFFERENCE_THRESHOLD &&
+            Math.abs(previousPixels[i].green - green) > DIFFERENCE_THRESHOLD &&
+            Math.abs(previousPixels[i].blue - blue) > DIFFERENCE_THRESHOLD
           ) {
             pixelDifference++;
           }
           previousPixels[i] = { red, green, blue };
         }
 
-        if (pixelDifference > 1000) {
+        if (pixelDifference > DIFFERENCE_COUNT_THRESHOLD) {
           movementDetected = true;
+          console.log(movementDetected);
         }
       }
     }
@@ -99,14 +102,22 @@ export function useDetectMovement() {
 
   const detect = (
     canvasElement: HTMLCanvasElement,
-    videoElement: HTMLVideoElement
+    videoElement: HTMLVideoElement,
+    sensitivity: number
   ) => {
     videoElement.height = window.innerHeight;
     videoElement.width = window.innerWidth;
 
     canvas.value = canvasElement;
     video.value = videoElement;
+    computeThresholds(sensitivity);
     window.requestAnimationFrame(startDetection);
+  };
+
+  const computeThresholds = (sensitivity: number) => {
+    sensitivity = sensitivity - 100;
+    DIFFERENCE_COUNT_THRESHOLD -= sensitivity;
+    DIFFERENCE_THRESHOLD -= sensitivity / 2;
   };
 
   onUnmounted(() => {

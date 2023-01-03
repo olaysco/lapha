@@ -33,6 +33,8 @@ import { defineComponent, onMounted, ref } from "vue";
 import { useHostRTC } from "../composables/useHostRTC";
 import { useCreateCamera } from "../composables/useCreateCamera";
 import { useDetectMovement } from "../composables/useDetectMovement";
+import { useStorage } from "../composables/useStorage";
+import { Settings } from "../types";
 
 export default defineComponent({
   name: "CapturePage",
@@ -52,11 +54,14 @@ export default defineComponent({
     const { streaming, startServer, performCleanup } = useHostRTC();
     const { isCameraOn } = useCreateCamera();
     const { detect } = useDetectMovement();
+    const { get: getSettings } = useStorage();
 
     onMounted(() => {
-      if (videoRef.value && canvasRef.value) {
-        detect(canvasRef.value, videoRef.value);
-      }
+      getSettings("settings").then((val: Settings) => {
+        if (val.movementDetection && videoRef.value && canvasRef.value) {
+          detect(canvasRef.value, videoRef.value, val.detectionSensitivity);
+        }
+      });
     });
     return {
       canvasRef,
