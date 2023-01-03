@@ -11,6 +11,9 @@
     <ion-content :fullscreen="true" class="ion-padding">
       <form action="">
         <ion-list>
+          <ion-list-header>
+            <ion-label>Capture Settings</ion-label>
+          </ion-list-header>
           <ion-item>
             <ion-label>Noise Detection</ion-label>
             <ion-toggle slot="end" v-model="settings.noiseDetection"></ion-toggle>
@@ -21,6 +24,14 @@
             <ion-toggle slot="end" v-model="settings.movementDetection"></ion-toggle>
           </ion-item>
 
+          <ion-item v-if="settings.movementDetection">
+            <ion-label>Sensitivity</ion-label>
+            <ion-range
+              :pin="true"
+              :pin-formatter="pinFormatter"
+              v-model="settings.detectionSensitivity"
+            ></ion-range>
+          </ion-item>
           <ion-item>
             <ion-label>Video Quality</ion-label>
             <ion-select
@@ -48,6 +59,7 @@ import {
   IonPage,
   IonItem,
   IonTitle,
+  IonRange,
   IonLabel,
   IonToggle,
   IonHeader,
@@ -65,6 +77,7 @@ export default defineComponent({
     IonPage,
     IonItem,
     IonTitle,
+    IonRange,
     IonLabel,
     IonSelect,
     IonToggle,
@@ -81,6 +94,7 @@ export default defineComponent({
       movementDetection: false,
       noiseDetection: false,
       videoQuality: "256",
+      detectionSensitivity: 50,
     });
 
     onMounted(() =>
@@ -91,6 +105,7 @@ export default defineComponent({
             settings.movementDetection = value.movementDetection;
             settings.noiseDetection = value.noiseDetection;
             settings.videoQuality = value.videoQuality;
+            settings.detectionSensitivity = value.detectionSensitivity;
           }
         })
         .catch((e) => console.log(e))
@@ -107,6 +122,7 @@ export default defineComponent({
       settings,
       useStorage,
       imageQualitySelect,
+      pinFormatter: (value: number) => `${value}%`,
     };
   },
 });
