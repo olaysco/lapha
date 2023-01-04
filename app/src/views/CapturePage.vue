@@ -7,8 +7,12 @@
             <ion-col></ion-col>
             <ion-col size="8"></ion-col>
             <ion-col
-              ><ion-button v-if="!streaming && isCameraOn" @click="startServer">
-                Stream
+              ><ion-button
+                v-if="!streaming && isCameraOn"
+                @click="startServer"
+                :disabled="serverOn"
+              >
+                {{ serverOn && !streaming ? "Waiting" : "Stream" }}
               </ion-button>
               <ion-button v-if="streaming" @click="performCleanup"
                 >Stop</ion-button
@@ -34,7 +38,7 @@ import { useHostRTC } from "../composables/useHostRTC";
 import { useCreateCamera } from "../composables/useCreateCamera";
 import { useDetectMovement } from "../composables/useDetectMovement";
 import { useStorage } from "../composables/useStorage";
-import { Settings } from "../types";
+import { HTMLVideoElementWithCaptureStream, Settings } from "../types";
 
 export default defineComponent({
   name: "CapturePage",
@@ -50,8 +54,8 @@ export default defineComponent({
 
   setup() {
     const canvasRef = ref<HTMLCanvasElement | null>(null);
-    const videoRef = ref<HTMLVideoElement | null>(null);
-    const { streaming, startServer, performCleanup } = useHostRTC();
+    const videoRef = ref<HTMLVideoElementWithCaptureStream | null>(null);
+    const { streaming, startServer, performCleanup, serverOn } = useHostRTC();
     const { isCameraOn } = useCreateCamera();
     const { detect } = useDetectMovement();
     const { get: getSettings } = useStorage();
@@ -68,6 +72,7 @@ export default defineComponent({
       videoRef,
       isCameraOn,
       streaming,
+      serverOn,
       startServer,
       performCleanup,
     };
@@ -103,5 +108,6 @@ export default defineComponent({
   position: absolute;
   left: 0;
   right: 0;
+  visibility: hidden;
 }
 </style>

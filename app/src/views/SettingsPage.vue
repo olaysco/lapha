@@ -52,7 +52,7 @@
 </template>
 <script lang="ts">
 import { Settings } from "../types";
-import { defineComponent, ref, watch, reactive, onMounted, toRaw } from "vue";
+import { defineComponent, watch, reactive, onMounted, toRaw } from "vue";
 import { useStorage } from "../composables/useStorage";
 import {
   IonList,
@@ -66,6 +66,7 @@ import {
   IonContent,
   IonToolbar,
   IonButtons,
+  IonListHeader,
   IonSelect,
   IonBackButton,
   IonSelectOption,
@@ -82,6 +83,7 @@ export default defineComponent({
     IonSelect,
     IonToggle,
     IonHeader,
+    IonListHeader,
     IonContent,
     IonToolbar,
     IonButtons,
