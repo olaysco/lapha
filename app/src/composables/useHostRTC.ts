@@ -3,9 +3,12 @@ import { ref, onUnmounted } from "vue";
 declare let cordova: any;
 
 export function useHostRTC() {
+  const serverOn = ref<boolean>(false);
   const streaming = ref<boolean>(false);
   const listeningPort = ref<number>(9090);
   const wsserver = cordova.plugins.wsserver;
+  const isDataChannelOpen = ref<boolean>(false);
+  let dataChannel: RTCDataChannel;
   const peerConnections = ref<Map<string, RTCPeerConnection>>(new Map());
   let peer: RTCPeerConnection;
 
@@ -39,6 +42,7 @@ export function useHostRTC() {
         tcpNoDelay: true,
       },
       function onStart(addr: string, port: string) {
+        serverOn.value = true;
         console.log("Start Listening on", addr, ":", port);
       },
       function onDidNotStart(reason: string) {
@@ -49,6 +53,8 @@ export function useHostRTC() {
 
   const sendRTCOffer = async (conn: any) => {
     peer = new RTCPeerConnection();
+    dataChannel = peer.createDataChannel("channel");
+    dataChannel.addEventListener("open", dataChannelopen);
     peer.onicecandidate = ({ candidate }) => {
       console.log("icecandaidate");
       sendMessage(conn.uuid, JSON.stringify({ candidate: candidate }));
@@ -78,12 +84,7 @@ export function useHostRTC() {
       console.log(msgObject.answer);
       await peer.setRemoteDescription(msgObject.answer);
       streaming.value = true;
-      console.log("aremote connected");
-      const dc = peer.createDataChannel("channel");
-      dc.onopen = () => {
-        console.log("dc opened");
-        dc.send("hello world");
-      };
+      console.log("cremote connected");
     }
   };
 
@@ -116,8 +117,16 @@ export function useHostRTC() {
     };
   };
 
+  const dataChannelopen = () => {
+    isDataChannelOpen.value = true;
+    console.log("data channel opened");
+  };
+
   const performCleanup = () => {
     wsserver.stop();
+    dataChannel.close();
+    isDataChannelOpen.value = false;
+    serverOn.value = false;
     streaming.value = false;
     peerConnections.value = new Map();
   };
@@ -126,6 +135,7 @@ export function useHostRTC() {
 
   return {
     streaming,
+    serverOn,
     startServer,
     sendMessage,
     performCleanup,

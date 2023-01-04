@@ -6,12 +6,14 @@ const state = reactive({ joining: false, hasJoin: false, port: 9090 });
 export function useJoinRTC() {
   let signalChannel: WebSocket | null = null;
   let peerConnection: RTCPeerConnection | null;
+  let dataChannel: RTCDataChannel;
 
   const joinRTC = async () => {
     state.joining = true;
     state.hasJoin = false;
     initSignalChanel();
     peerConnection = new RTCPeerConnection();
+    peerConnection.ondatachannel = dataChannelOpen;
     peerConnection.onicecandidate = ({ candidate }) => {
       console.log("icecandaidate");
       signalChannel?.send(JSON.stringify({ candidate: candidate }));
@@ -70,6 +72,16 @@ export function useJoinRTC() {
       console.log("receive ice " + msg.candidate);
       peerConnection?.addIceCandidate(msg.candidate);
     }
+  };
+
+  const dataChannelOpen = (event: RTCDataChannelEvent) => {
+    console.log("dc channel ", event.channel.label);
+    dataChannel = event.channel;
+    dataChannel.onopen = handleDataChannelMessage;
+  };
+
+  const handleDataChannelMessage = (event: Event) => {
+    console.log(event);
   };
 
   const handleIceCandidate = (

@@ -85,7 +85,6 @@ export function useCreateCamera() {
         if (!result.hasPermission) {
           AndroidPermissions.requestPermissions(permissionName)
             .then(() => {
-              // alert("PERMISSION-GIVEN");
               resolve(true);
             })
             .catch((err) => {
