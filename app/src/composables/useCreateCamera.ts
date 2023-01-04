@@ -28,7 +28,7 @@ export function useCreateCamera() {
     state.isMicOn = true;
     state.isCameraOn = true;
     localVideo.srcObject = stream.value;
-    localVideo.play();
+    localVideo.play().then(() => (localVideo.muted = true));
   };
 
   const toggleStream = async () => {
