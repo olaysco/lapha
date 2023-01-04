@@ -28,8 +28,8 @@ export function useDetectMovement() {
   const canvas = ref<HTMLCanvasElement>();
   const video = ref<HTMLVideoElement>();
   const timeoutID = ref<number>(0);
-  let DIFFERENCE_COUNT_THRESHOLD = 100;
-  let DIFFERENCE_THRESHOLD = 50;
+  const DIFFERENCE_COUNT_THRESHOLD = { min: 0, max: 100, current: 50 };
+  const DIFFERENCE_THRESHOLD = { min: 25, max: 50, current: 25 };
 
   const startDetection = () => {
     if (video.value && canvas.value) {
@@ -75,18 +75,20 @@ export function useDetectMovement() {
           const blue = data[i + 2];
           if (
             previousPixels[i] &&
-            Math.abs(previousPixels[i].red - red) > DIFFERENCE_THRESHOLD &&
-            Math.abs(previousPixels[i].green - green) > DIFFERENCE_THRESHOLD &&
-            Math.abs(previousPixels[i].blue - blue) > DIFFERENCE_THRESHOLD
+            Math.abs(previousPixels[i].red - red) >
+              DIFFERENCE_THRESHOLD.current &&
+            Math.abs(previousPixels[i].green - green) >
+              DIFFERENCE_THRESHOLD.current &&
+            Math.abs(previousPixels[i].blue - blue) >
+              DIFFERENCE_THRESHOLD.current
           ) {
             pixelDifference++;
           }
           previousPixels[i] = { red, green, blue };
         }
 
-        if (pixelDifference > DIFFERENCE_COUNT_THRESHOLD) {
+        if (pixelDifference > DIFFERENCE_COUNT_THRESHOLD.current) {
           movementDetected = true;
-          console.log(movementDetected);
         }
       }
     }
@@ -115,9 +117,24 @@ export function useDetectMovement() {
   };
 
   const computeThresholds = (sensitivity: number) => {
-    sensitivity = sensitivity - 100;
-    DIFFERENCE_COUNT_THRESHOLD -= sensitivity;
-    DIFFERENCE_THRESHOLD -= sensitivity / 2;
+    // To the user, the higher the number the higher the sensitivity,
+    // but in the detector, the lower the number the higher the sensitivity.
+    // keeping this behavior for smooth User Xperience.
+    sensitivity = 100 - sensitivity;
+    // fit user sensitivity value to the right threshold scale,
+    // for example, if the threshold scale is between 25 - 50,
+    // and sensitivity is set to 40, in the scale this will be 35
+    // i.e. we are fitting 0 - 100 between 25 - 50.
+    DIFFERENCE_COUNT_THRESHOLD.current =
+      (sensitivity / 100) *
+        (DIFFERENCE_COUNT_THRESHOLD.max - DIFFERENCE_COUNT_THRESHOLD.min) +
+      DIFFERENCE_COUNT_THRESHOLD.min;
+    DIFFERENCE_THRESHOLD.current =
+      (sensitivity / 100) *
+        (DIFFERENCE_THRESHOLD.max - DIFFERENCE_THRESHOLD.min) +
+      DIFFERENCE_THRESHOLD.min;
+
+    console.log(DIFFERENCE_COUNT_THRESHOLD, DIFFERENCE_THRESHOLD);
   };
 
   onUnmounted(() => {
