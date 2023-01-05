@@ -14,7 +14,7 @@
 
         <div class="mode-btns">
           <ion-nav-link router-direction="forward" :component="CapturePage">
-            <ion-button router-link="/capture" expand="full">
+            <ion-button router-link="/capture" expand="full" v-if="isMobile">
               Capture Mode
               <ion-icon slot="end" :icon="videocam"></ion-icon>
             </ion-button>
