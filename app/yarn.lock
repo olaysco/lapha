@@ -26,10 +26,31 @@
   dependencies:
     "@types/cordova" latest
 
+"@awesome-cordova-plugins/badge@^6.3.0":
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/@awesome-cordova-plugins/badge/-/badge-6.3.0.tgz#09526ac92be9831e7d351ca68fd69ba87e31c598"
+  integrity sha512-05KYSCY9Dw9Sos/nSfvh8KTnP1hSSSjzHrCe+p3iBjUyKufgui03u8b168PaS4o9aEqpRxAYZaHgvQYEpya9YA==
+  dependencies:
+    "@types/cordova" latest
+
 "@awesome-cordova-plugins/core@^6.2.0":
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/@awesome-cordova-plugins/core/-/core-6.2.0.tgz#51422eb047f5f3e99fb1753eee2c457822e9f1c8"
   integrity sha512-z5rKlTuQpLLPEIgzOmomQdoiRw5Sal2blh5CJRcjqh8ktspefbNC81Ni0MykPdV78/UlRORTHEzxugpcEcl1RQ==
+  dependencies:
+    "@types/cordova" latest
+
+"@awesome-cordova-plugins/device@^6.3.0":
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/@awesome-cordova-plugins/device/-/device-6.3.0.tgz#2b15bec3325e13af74fe4b20c06e69722397f455"
+  integrity sha512-HZy/rySD+2ABITesDDn/9J3FpYP6x/Sq3hMzflhQR9+eoaRmnpfOMq/TyGn/u4BRIHrU6rPC6k6DV190IGLn3A==
+  dependencies:
+    "@types/cordova" latest
+
+"@awesome-cordova-plugins/local-notifications@^6.3.0":
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/@awesome-cordova-plugins/local-notifications/-/local-notifications-6.3.0.tgz#4112a5fbacd5459cf0786bbee45e1b75c95b7b5e"
+  integrity sha512-KYsq48vQSitqvo6Jqui/RyQ8gBltm+t9P0gpVpLigoosCR66xMCJFGpQvCmbWJRzCB2Sb6HD98PJzpkEfG28zg==
   dependencies:
     "@types/cordova" latest
 
@@ -3706,14 +3727,23 @@ cordova-plugin-android-permissions@^1.1.5:
   resolved "https://registry.yarnpkg.com/cordova-plugin-android-permissions/-/cordova-plugin-android-permissions-1.1.5.tgz#aeecda735c4e5fe39ffc243e67a7a6faa6dd57d4"
   integrity sha512-oTTV9cCMBqXTCmU+nYRebsP2IQfrtdvl2vYXHjoJgv5NHCIDgY4KFg6kJTcwXQOiymeGXuw0+MTvJJOueAdleA==
 
-cordova-plugin-websocket-server@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/cordova-plugin-websocket-server/-/cordova-plugin-websocket-server-1.6.0.tgz#5ea95f6b28ad0608150969725759ce972029c497"
-  integrity sha512-41FUXWGOa+jUcft8PUBuibv1AhUT1wRnIt9TIQVFcjV1oDySGZ1oDmGzjtRi//UNEOvTGUPzkHeZfJKJs0TMpA==
+cordova-plugin-badge-fix@^0.8.10:
+  version "0.8.10"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-badge-fix/-/cordova-plugin-badge-fix-0.8.10.tgz#ab09f18bf1a11d76ecdcc02b199af18a1a4365f1"
+  integrity sha512-4yvfe5Qil9Bz7OTSnVNVkQV5Mru0wSAgfAhBE/myo9aPLT7yjs3sn963Shg4MCDPlVCganS0spJ384fsyYB6lA==
+
+cordova-plugin-device@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-device/-/cordova-plugin-device-2.1.0.tgz#ef2292c2f0a34d01b5aca6c39cf204e48a460fb2"
+  integrity sha512-FU0Lw1jZpuKOgG4v80LrfMAOIMCGfAVPumn7AwaX9S1iU/X3OPZUyoKUgP09q4bxL35IeNPkqNWVKYduAXZ1sg==
+
+"cordova-plugin-local-notification@https://github.com/fquirin/cordova-plugin-local-notifications.git":
+  version "0.10.0"
+  resolved "https://github.com/fquirin/cordova-plugin-local-notifications.git#a3b5d5f97a96950229cfe244c5d251b1a00510e9"
 
 "cordova-plugin-websocket-server@https://github.com/olaysco/cordova-plugin-websocket-server.git#reuse_address":
   version "1.6.0"
-  resolved "https://github.com/olaysco/cordova-plugin-websocket-server.git#11addc199e832aacc08a914b01ee0ba23a94f928"
+  resolved "https://github.com/olaysco/cordova-plugin-websocket-server.git#f225406e625099dfb3cf88a0124c7ac995a058f0"
 
 cordova-sqlite-storage-dependencies@4.1.0:
   version "4.1.0"

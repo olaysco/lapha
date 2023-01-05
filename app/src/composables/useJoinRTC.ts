@@ -1,5 +1,7 @@
+import { NOTIFICATIONS } from "./../types";
 import { toRefs, reactive } from "vue";
 import { toastController } from "@ionic/vue";
+import { useDisplayNotification } from "../composables/useDisplayNotification";
 
 const state = reactive({ joining: false, hasJoin: false, port: 9090 });
 
@@ -90,7 +92,11 @@ export function useJoinRTC() {
   };
 
   const handleDataChannelMessage = (event: MessageEvent) => {
-    console.log(" new message " + event.data);
+    const data = JSON.parse(event.data);
+    console.log(" new message " + data.type);
+    if (data.type && data.type == NOTIFICATIONS.MOVEMENT) {
+      useDisplayNotification("Alert: A movement detected!!!");
+    }
   };
 
   const handleIceCandidate = (
