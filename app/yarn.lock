@@ -3711,6 +3711,10 @@ cordova-plugin-websocket-server@^1.6.0:
   resolved "https://registry.yarnpkg.com/cordova-plugin-websocket-server/-/cordova-plugin-websocket-server-1.6.0.tgz#5ea95f6b28ad0608150969725759ce972029c497"
   integrity sha512-41FUXWGOa+jUcft8PUBuibv1AhUT1wRnIt9TIQVFcjV1oDySGZ1oDmGzjtRi//UNEOvTGUPzkHeZfJKJs0TMpA==
 
+"cordova-plugin-websocket-server@https://github.com/olaysco/cordova-plugin-websocket-server.git#reuse_address":
+  version "1.6.0"
+  resolved "https://github.com/olaysco/cordova-plugin-websocket-server.git#11addc199e832aacc08a914b01ee0ba23a94f928"
+
 cordova-sqlite-storage-dependencies@4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/cordova-sqlite-storage-dependencies/-/cordova-sqlite-storage-dependencies-4.1.0.tgz#5b685b3802669f84b567ae34f70ff3d1b367f639"
@@ -6975,6 +6979,11 @@ minizlib@^2.0.0, minizlib@^2.1.1, minizlib@^2.1.2:
   dependencies:
     minipass "^3.0.0"
     yallist "^4.0.0"
+
+mitt@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/mitt/-/mitt-3.0.0.tgz#69ef9bd5c80ff6f57473e8d89326d01c414be0bd"
+  integrity sha512-7dX2/10ITVyqh4aOSVI9gdape+t9l2/8QxHrFmUXu4EEUpdlxl6RudZUPZoc+zuY2hk1j7XxVroIVIan/pD/SQ==
 
 mkdirp@^0.5.6:
   version "0.5.6"
