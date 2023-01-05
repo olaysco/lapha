@@ -1,6 +1,8 @@
 import { HTMLVideoElementWithCaptureStream } from "./../types";
 import { ref, onUnmounted, reactive, toRefs } from "vue";
 import { isPlatform } from "@ionic/vue";
+import { toast } from "./useToast";
+import { Flashlight } from "@awesome-cordova-plugins/flashlight";
 import { AndroidPermissions } from "@awesome-cordova-plugins/android-permissions";
 
 type cameraDevice = {
@@ -70,9 +72,18 @@ export function useCreateCamera() {
       track.enabled = state.isMicOn;
     }
   };
+
   const toggleFlash = function () {
-    //not yet implemented
-    state.isFlashOn = !state.isFlashOn;
+    Flashlight.available().then((available) => {
+      if (available) {
+        Flashlight.toggle().then(() => {
+          state.isFlashOn = !state.isFlashOn;
+        });
+
+        return;
+      }
+      toast().showInfo("Flash not supported by this device");
+    });
   };
 
   const performCleanup = () => {

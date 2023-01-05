@@ -47,6 +47,13 @@
   dependencies:
     "@types/cordova" latest
 
+"@awesome-cordova-plugins/flashlight@^6.3.0":
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/@awesome-cordova-plugins/flashlight/-/flashlight-6.3.0.tgz#9d5fb938baba47a0d9ac500b871e394f45d01fd3"
+  integrity sha512-lh1AiExCXKL4f8gUzQrnTM0EJGaVzITBeBV7x02FkGBQxUboomNfksBPVZTu70ePaVBA8FNzmAjekxzzm/erMg==
+  dependencies:
+    "@types/cordova" latest
+
 "@awesome-cordova-plugins/local-notifications@^6.3.0":
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/@awesome-cordova-plugins/local-notifications/-/local-notifications-6.3.0.tgz#4112a5fbacd5459cf0786bbee45e1b75c95b7b5e"
@@ -3736,6 +3743,11 @@ cordova-plugin-device@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/cordova-plugin-device/-/cordova-plugin-device-2.1.0.tgz#ef2292c2f0a34d01b5aca6c39cf204e48a460fb2"
   integrity sha512-FU0Lw1jZpuKOgG4v80LrfMAOIMCGfAVPumn7AwaX9S1iU/X3OPZUyoKUgP09q4bxL35IeNPkqNWVKYduAXZ1sg==
+
+cordova-plugin-flashlight@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-flashlight/-/cordova-plugin-flashlight-3.2.0.tgz#d09a40ce30ad36a9f004050124b6e815281fbbb2"
+  integrity sha512-MnddnFBSk1UHWopsBQLppF3Xs8p/Vy3DiVjIcWO4gEtqfrNanF7Rn0+UBmO+FqtSxitioCLLrUoR/nYSA9MQjg==
 
 "cordova-plugin-local-notification@https://github.com/fquirin/cordova-plugin-local-notifications.git":
   version "0.10.0"
