@@ -1,3 +1,4 @@
+import { NOTIFICATIONS } from "./../types";
 /**
  * Movement detection in a video stream is impemented by
  * capturing still images from each video as a frame, and comparing
@@ -22,13 +23,14 @@
  */
 
 import { onUnmounted, ref } from "vue";
+import eventBus from "../events/bus";
 
 export function useDetectMovement() {
   const previousPixels: { red: number; green: number; blue: number }[] = [];
   const canvas = ref<HTMLCanvasElement>();
   const video = ref<HTMLVideoElement>();
   const timeoutID = ref<number>(0);
-  const DIFFERENCE_COUNT_THRESHOLD = { min: 0, max: 100, current: 50 };
+  const DIFFERENCE_COUNT_THRESHOLD = { min: 20, max: 100, current: 50 };
   const DIFFERENCE_THRESHOLD = { min: 25, max: 50, current: 25 };
 
   const startDetection = () => {
@@ -67,7 +69,6 @@ export function useDetectMovement() {
       const data = canvasContext?.getImageData(0, 0, width, height).data;
       let pixelDifference = 0;
       if (data) {
-        let movementDetected = false;
         // each pixel is represented by four element, r, g, b & a.
         for (let i = 0; i < data.length; i += 4) {
           const red = data[i];
@@ -88,7 +89,7 @@ export function useDetectMovement() {
         }
 
         if (pixelDifference > DIFFERENCE_COUNT_THRESHOLD.current) {
-          movementDetected = true;
+          triggerAlert();
         }
       }
     }
@@ -135,6 +136,13 @@ export function useDetectMovement() {
       DIFFERENCE_THRESHOLD.min;
 
     console.log(DIFFERENCE_COUNT_THRESHOLD, DIFFERENCE_THRESHOLD);
+  };
+
+  const triggerAlert = () => {
+    //implement a form of throttle here, so we don't keep sending same alert every sec.
+    eventBus.emit(NOTIFICATIONS.MOVEMENT, {
+      data: canvas.value?.toDataURL(),
+    });
   };
 
   onUnmounted(() => {

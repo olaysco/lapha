@@ -1,5 +1,6 @@
-import { HTMLVideoElementWithCaptureStream } from "./../types";
-import { ref, onUnmounted } from "vue";
+import { HTMLVideoElementWithCaptureStream, NOTIFICATIONS } from "./../types";
+import { ref, onUnmounted, onMounted } from "vue";
+import eventBus from "../events/bus";
 declare let cordova: any;
 
 export function useHostRTC() {
@@ -54,7 +55,8 @@ export function useHostRTC() {
   const sendRTCOffer = async (conn: any) => {
     peer = new RTCPeerConnection();
     dataChannel = peer.createDataChannel("channel");
-    dataChannel.addEventListener("open", dataChannelopen);
+    dataChannel.addEventListener("open", handleDataChannelopen);
+    dataChannel.addEventListener("close", handleDataChannelclose);
     peer.onicecandidate = ({ candidate }) => {
       console.log("icecandaidate");
       sendMessage(conn.uuid, JSON.stringify({ candidate: candidate }));
@@ -84,7 +86,7 @@ export function useHostRTC() {
       console.log(msgObject.answer);
       await peer.setRemoteDescription(msgObject.answer);
       streaming.value = true;
-      console.log("cremote connected");
+      console.log("dremote connected");
     }
   };
 
@@ -117,9 +119,14 @@ export function useHostRTC() {
     };
   };
 
-  const dataChannelopen = () => {
+  const handleDataChannelopen = () => {
     isDataChannelOpen.value = true;
     console.log("data channel opened");
+  };
+
+  const handleDataChannelclose = () => {
+    isDataChannelOpen.value = false;
+    console.log("data channel close");
   };
 
   const performCleanup = () => {
@@ -131,7 +138,25 @@ export function useHostRTC() {
     peerConnections.value = new Map();
   };
 
+  const setup = () => {
+    eventBus.on(NOTIFICATIONS.MOVEMENT, handleMovementAlert);
+  };
+
+  const handleMovementAlert = (event: any) => {
+    if (
+      streaming.value &&
+      dataChannel != null &&
+      dataChannel.readyState == "open"
+    ) {
+      console.log("sending alert");
+      dataChannel.send(
+        JSON.stringify({ type: NOTIFICATIONS.MOVEMENT, snapshot: event?.data })
+      );
+    }
+  };
+
   onUnmounted(performCleanup);
+  onMounted(setup);
 
   return {
     streaming,

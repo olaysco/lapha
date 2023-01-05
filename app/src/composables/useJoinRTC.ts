@@ -69,19 +69,28 @@ export function useJoinRTC() {
     }
 
     if (msg.candidate) {
-      console.log("receive ice " + msg.candidate);
-      peerConnection?.addIceCandidate(msg.candidate);
+      try {
+        console.log("receive ice " + msg.candidate);
+        peerConnection?.addIceCandidate(msg.candidate);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
   const dataChannelOpen = (event: RTCDataChannelEvent) => {
     console.log("dc channel ", event.channel.label);
     dataChannel = event.channel;
-    dataChannel.onopen = handleDataChannelMessage;
+    dataChannel.onopen = handleDataChannelOpen;
+    dataChannel.onmessage = handleDataChannelMessage;
   };
 
-  const handleDataChannelMessage = (event: Event) => {
+  const handleDataChannelOpen = (event: Event) => {
     console.log(event);
+  };
+
+  const handleDataChannelMessage = (event: MessageEvent) => {
+    console.log(" new message " + event.data);
   };
 
   const handleIceCandidate = (

@@ -7,3 +7,8 @@ export type Settings = {
 export interface HTMLVideoElementWithCaptureStream extends HTMLVideoElement {
   captureStream(): MediaStream;
 }
+
+export const NOTIFICATIONS = {
+  MOVEMENT: "movement_detection_alert",
+  NOISE: "sound_detection_alert",
+};
