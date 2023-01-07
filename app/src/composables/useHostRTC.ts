@@ -4,6 +4,7 @@ import eventBus from "../events/bus";
 declare let cordova: any;
 
 export function useHostRTC() {
+  const listeningAddress = ref<Array<string>>([]);
   const serverOn = ref<boolean>(false);
   const streaming = ref<boolean>(false);
   const listeningPort = ref<number>(9090);
@@ -44,7 +45,21 @@ export function useHostRTC() {
       },
       function onStart(addr: string, port: string) {
         serverOn.value = true;
+        listeningAddress.value = [];
         console.log("Start Listening on", addr, ":", port);
+        wsserver.getInterfaces(function (result: any) {
+          for (const networkInterface in result) {
+            if (
+              Object.prototype.hasOwnProperty.call(result, networkInterface)
+            ) {
+              console.log("networkInterface", networkInterface);
+              const ipv4 = result[networkInterface].ipv4Addresses;
+              if (ipv4) {
+                listeningAddress.value.push(ipv4);
+              }
+            }
+          }
+        });
       },
       function onDidNotStart(reason: string) {
         console.log("Did not start. Reason: %s", reason);
@@ -130,11 +145,16 @@ export function useHostRTC() {
   };
 
   const performCleanup = () => {
-    wsserver.stop();
-    dataChannel.close();
-    isDataChannelOpen.value = false;
-    serverOn.value = false;
-    streaming.value = false;
+    if (serverOn.value) {
+      wsserver.stop();
+      serverOn.value = false;
+    }
+
+    if (streaming.value) {
+      dataChannel.close();
+      isDataChannelOpen.value = false;
+      streaming.value = false;
+    }
     peerConnections.value = new Map();
   };
 
@@ -164,5 +184,7 @@ export function useHostRTC() {
     startServer,
     sendMessage,
     performCleanup,
+    listeningPort,
+    listeningAddress,
   };
 }

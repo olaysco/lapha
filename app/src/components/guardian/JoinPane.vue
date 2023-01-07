@@ -17,9 +17,18 @@
             <div>
               <ion-list>
                 <ion-item>
-                  <ion-label position="stacked"
-                    >Enter the port showing on the host screen</ion-label
-                  >
+                  <ion-label position="stacked">Enter the host IP</ion-label>
+                  <ion-input
+                    :clearOnEdit="true"
+                    placeholder="Enter the Host IP"
+                    required
+                    type="text"
+                    v-model="hostIP"
+                    pattern="^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+                  ></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label position="stacked">Enter the host port</ion-label>
                   <ion-input
                     :clearOnEdit="true"
                     placeholder="Enter the Host IP"
@@ -31,7 +40,9 @@
                 </ion-item>
               </ion-list>
             </div>
-            <ion-button @click="connectHost" :disabled="!portValid">Connect</ion-button>
+            <ion-button @click="connectHost" :disabled="!portValid || !ipValid"
+              >Connect</ion-button
+            >
           </div>
         </div>
       </div>
@@ -55,12 +66,19 @@ export default defineComponent({
     const portValid = computed(() => {
       return hostPort.value > 1000 && hostPort.value < 65535;
     });
+    const ipValid = computed(() => {
+      return /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(
+        hostIP.value
+      );
+    });
     const connectHost = async () => {
       await joinRTC();
     };
 
-    const { hasJoin, joinRTC, disconnectRTC, port: hostPort } = useJoinRTC();
+    const { hasJoin, joinRTC, disconnectRTC, port: hostPort, ip: hostIP } = useJoinRTC();
     return {
+      ipValid,
+      hostIP,
       hostPort,
       hasJoin,
       joinRTC,

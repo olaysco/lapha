@@ -14,12 +14,17 @@
               >
                 {{ serverOn && !streaming ? "Waiting" : "Stream" }}
               </ion-button>
-              <ion-button v-if="streaming" @click="performCleanup"
+              <ion-button v-if="serverOn" @click="performCleanup"
                 >Stop</ion-button
               ></ion-col
             >
           </ion-row>
         </ion-grid>
+      </div>
+      <div class="ip-info">
+        <p v-for="ip in listeningAddress" :key="ip">
+          {{ `IP: ${ip} - PORT:${listeningPort}` }}
+        </p>
       </div>
       <camera-control />
       <div class="stream-overlay" id="stream-overlay">
@@ -55,14 +60,21 @@ export default defineComponent({
   setup() {
     const canvasRef = ref<HTMLCanvasElement | null>(null);
     const videoRef = ref<HTMLVideoElementWithCaptureStream | null>(null);
-    const { streaming, startServer, performCleanup, serverOn } = useHostRTC();
+    const {
+      streaming,
+      startServer,
+      performCleanup,
+      serverOn,
+      listeningPort,
+      listeningAddress,
+    } = useHostRTC();
     const { isCameraOn } = useCreateCamera();
     const { detect } = useDetectMovement();
     const { get: getSettings } = useStorage();
 
     onMounted(() => {
       getSettings("settings").then((val: Settings) => {
-        if (val.movementDetection && videoRef.value && canvasRef.value) {
+        if (val && val.movementDetection && videoRef.value && canvasRef.value) {
           detect(canvasRef.value, videoRef.value, val.detectionSensitivity);
         }
       });
@@ -75,6 +87,8 @@ export default defineComponent({
       serverOn,
       startServer,
       performCleanup,
+      listeningPort,
+      listeningAddress,
     };
   },
 });
@@ -109,5 +123,20 @@ export default defineComponent({
   left: 0;
   right: 0;
   visibility: hidden;
+}
+
+.ip-info {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  padding: 0 1rem;
+  z-index: 100;
+  background-color: rgba(0, 150, 136, 0.2);
+
+  & > p {
+    margin: 0.4rem 0;
+    font-weight: 200;
+  }
 }
 </style>

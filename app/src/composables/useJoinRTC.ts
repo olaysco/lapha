@@ -3,7 +3,12 @@ import { toRefs, reactive } from "vue";
 import { toastController } from "@ionic/vue";
 import { useDisplayNotification } from "../composables/useDisplayNotification";
 
-const state = reactive({ joining: false, hasJoin: false, port: 9090 });
+const state = reactive({
+  joining: false,
+  hasJoin: false,
+  port: 9090,
+  ip: "",
+});
 
 export function useJoinRTC() {
   let signalChannel: WebSocket | null = null;
@@ -38,7 +43,7 @@ export function useJoinRTC() {
   const initSignalChanel = (): WebSocket | null => {
     if (signalChannel == null) {
       // we will eventually replace providing of custom port with scanning of QR.
-      signalChannel = new WebSocket(`ws://localhost:${state.port}`);
+      signalChannel = new WebSocket(`ws://${state.ip}:${state.port}`);
       signalChannel.onerror = (e) => {
         console.log(e);
         if (signalChannel?.readyState == WebSocket.CLOSED) {
