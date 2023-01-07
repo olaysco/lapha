@@ -50,9 +50,11 @@
   </div>
 </template>
 <script lang="ts">
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, onMounted } from "vue";
 import { useJoinRTC } from "../../composables/useJoinRTC";
+import { useStorage } from "../../composables/useStorage";
 import { IonButton, IonInput, IonItem, IonList, IonLabel } from "@ionic/vue";
+import { ConnectionParams } from "../../types";
 
 export default defineComponent({
   components: {
@@ -72,8 +74,26 @@ export default defineComponent({
       );
     });
     const connectHost = async () => {
+      setStorage("connectionParams", { hostIP: hostIP.value, hostPort: hostPort.value });
       await joinRTC();
     };
+
+    const { get: getStorage, set: setStorage } = useStorage();
+
+    onMounted(() => {
+      getStorage("connectionParams").then((val: ConnectionParams) => {
+        if (!val) {
+          return;
+        }
+        if (val.hostIP) {
+          hostIP.value = val.hostIP;
+        }
+
+        if (val.hostPort) {
+          hostPort.value = val.hostPort;
+        }
+      });
+    });
 
     const { hasJoin, joinRTC, disconnectRTC, port: hostPort, ip: hostIP } = useJoinRTC();
     return {

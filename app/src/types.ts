@@ -4,6 +4,11 @@ export type Settings = {
   videoQuality: string;
   detectionSensitivity: number;
 };
+
+export type ConnectionParams = {
+  hostIP: string;
+  hostPort: number;
+};
 export interface HTMLVideoElementWithCaptureStream extends HTMLVideoElement {
   captureStream(): MediaStream;
 }
