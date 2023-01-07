@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { getPlatforms, isPlatform, toastController } from "@ionic/vue";
+import { toast } from "../composables/useToast";
+import { getPlatforms, isPlatform } from "@ionic/vue";
 import { LocalNotifications } from "@awesome-cordova-plugins/local-notifications";
 
 export function useDisplayNotification(message: any) {
-  console.log(isPlatform("android") + " " + getPlatforms());
+  toast().showInfo(message);
 
   if (
-    // @ts-ignore
-    ["pwa", "mobileweb"].some((platform) => getPlatforms().includes(platform))
+    ["pwa", "mobileweb", "desktop"].some((platform) => {
+      // @ts-ignore
+      return getPlatforms().includes(platform);
+    })
   ) {
     Notification.requestPermission((status) => {
       if (status === "granted") {
@@ -26,13 +29,4 @@ export function useDisplayNotification(message: any) {
 
     return;
   }
-
-  toastController
-    .create({
-      message: message,
-      duration: 1500,
-      position: "top",
-      color: "danger",
-    })
-    .then((toast) => toast.present());
 }

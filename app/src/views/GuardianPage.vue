@@ -13,12 +13,16 @@
           <ion-col></ion-col>
           <ion-col size="8"></ion-col>
           <ion-col>
-            <ion-button @click="presentDrawer" v-html="`${hasJoin ? 'Joined' : 'Join'}`">
+            <ion-button v-if="!hasJoin" @click="presentDrawer" v-html="`join`">
             </ion-button>
+            <ion-button v-else @click="disconnectRTC" v-html="`disconnect`"> </ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
 
+      <div v-show="!hasJoin" class="join-prompt">
+        <span>Click the join button above to connect.</span>
+      </div>
       <div class="remote-overlay" id="remote-overlay" v-show="hasJoin">
         <video id="remoteTrack" autoplay></video>
       </div>
@@ -61,7 +65,7 @@ export default defineComponent({
     const joinPaneRef = ref<InstanceType<typeof JoinPane> | null>(null);
     const pageRef = ref<InstanceType<typeof IonPage> | null>(null);
 
-    const { joining, hasJoin, joinRTC } = useJoinRTC();
+    const { joining, hasJoin, joinRTC, disconnectRTC } = useJoinRTC();
     const { initPane, showPane, presentDrawer, destroyPane, hidePane } = useContentPane();
 
     watch(hasJoin, (newVal) => {
@@ -81,6 +85,7 @@ export default defineComponent({
       destroyPane();
     });
     return {
+      disconnectRTC,
       presentDrawer,
       showPane,
       hasJoin,
@@ -140,5 +145,13 @@ ion-backdrop {
       margin-right: 0.4em;
     }
   }
+}
+.join-prompt {
+  position: absolute;
+  top: 50%;
+  width: 100vw;
+  left: 0;
+  text-align: center;
+  color: #d2d0d0;
 }
 </style>
