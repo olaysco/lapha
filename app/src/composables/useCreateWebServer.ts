@@ -70,7 +70,7 @@ export function useCreateWebServer() {
       }
     });
 
-    WebServer.start(40101)
+    WebServer.start()
       .then((e: any) => {
         serverStarted.value = true;
         globalState().httpAddress.port = JSON.parse(JSON.stringify(e)).port;
