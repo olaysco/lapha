@@ -1,53 +1,68 @@
 <template>
-  <ion-page class="capture-page">
+  <ion-page class="capture-page" ref="capturePageRef">
     <ion-content :fullscreen="true" class="ion-padding">
       <div class="custom-header">
         <ion-grid>
           <ion-row>
-            <ion-col></ion-col>
-            <ion-col size="8"></ion-col>
-            <ion-col
+            <ion-col size="4"
               ><ion-button
-                v-if="!streaming && isCameraOn"
+                v-if="!serverOn && isCameraOn"
                 @click="startServer"
                 :disabled="serverOn"
               >
-                {{ serverOn && !streaming ? "Waiting" : "Stream" }}
+                {{ "Stream" }}
               </ion-button>
               <ion-button v-if="serverOn" @click="performCleanup"
                 >Stop</ion-button
               ></ion-col
             >
+            <ion-col size="6"></ion-col>
+            <ion-col size="2">
+              <ion-button @click="presentDrawer" expand="block">
+                <ion-icon :icon="wifi"></ion-icon>
+              </ion-button>
+            </ion-col>
           </ion-row>
         </ion-grid>
-      </div>
-      <div class="ip-info">
-        <p v-for="ip in listeningAddress" :key="ip">
-          {{ `IP: ${ip} - PORT:${listeningPort}` }}
-        </p>
       </div>
       <camera-control />
       <div class="stream-overlay" id="stream-overlay">
         <canvas class="movement-canvas" id="movement-canvas" ref="canvasRef"></canvas>
         <video id="video" ref="videoRef" muted></video>
       </div>
+      <connection-information-pane ref="connectionInformationPaneRef" v-show="showPane" />
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
 import CameraControl from "../components/capture/CameraControl.vue";
-import { IonPage, IonContent, IonButton, IonGrid, IonRow, IonCol } from "@ionic/vue";
+import {
+  IonIcon,
+  IonPage,
+  IonContent,
+  IonButton,
+  IonGrid,
+  IonRow,
+  IonCol,
+  onIonViewDidEnter,
+  onIonViewWillLeave,
+} from "@ionic/vue";
+import { wifi } from "ionicons/icons";
 import { defineComponent, onMounted, ref } from "vue";
 import { useHostRTC } from "../composables/useHostRTC";
 import { useCreateCamera } from "../composables/useCreateCamera";
 import { useDetectMovement } from "../composables/useDetectMovement";
 import { useStorage } from "../composables/useStorage";
 import { HTMLVideoElementWithCaptureStream, Settings } from "../types";
+import ConnectionInformationPane from "../components/capture/ConnectionInformationPane.vue";
+import { useContentPane } from "../composables/useContentPane";
+import { useCreateWebServer } from "../composables/useCreateWebServer";
 
 export default defineComponent({
   name: "CapturePage",
   components: {
+    IonIcon,
     IonRow,
     IonCol,
     IonGrid,
@@ -55,22 +70,22 @@ export default defineComponent({
     IonButton,
     IonContent,
     CameraControl,
+    ConnectionInformationPane,
   },
 
   setup() {
     const canvasRef = ref<HTMLCanvasElement | null>(null);
     const videoRef = ref<HTMLVideoElementWithCaptureStream | null>(null);
-    const {
-      streaming,
-      startServer,
-      performCleanup,
-      serverOn,
-      listeningPort,
-      listeningAddress,
-    } = useHostRTC();
+    const capturePageRef = ref<InstanceType<typeof IonPage> | null>(null);
+    const connectionInformationPaneRef = ref<InstanceType<
+      typeof ConnectionInformationPane
+    > | null>(null);
+
+    const { streaming, startServer, performCleanup, serverOn } = useHostRTC();
     const { isCameraOn } = useCreateCamera();
     const { detect } = useDetectMovement();
     const { get: getSettings } = useStorage();
+    const { initPane, showPane, presentDrawer, destroyPane, hidePane } = useContentPane();
 
     onMounted(() => {
       getSettings("settings").then((val: Settings) => {
@@ -78,8 +93,26 @@ export default defineComponent({
           detect(canvasRef.value, videoRef.value, val.detectionSensitivity);
         }
       });
+
+      useCreateWebServer().startWebServer();
     });
+    onIonViewDidEnter(() => {
+      if (connectionInformationPaneRef.value && capturePageRef.value) {
+        const pane = connectionInformationPaneRef.value.$refs.cupertinoPane;
+        const parent = capturePageRef.value.$refs.ionPage;
+        initPane(pane as HTMLElement, parent as HTMLElement);
+      }
+    });
+    onIonViewWillLeave(() => {
+      destroyPane();
+    });
+
     return {
+      connectionInformationPaneRef,
+      capturePageRef,
+      presentDrawer,
+      wifi,
+      showPane,
       canvasRef,
       videoRef,
       isCameraOn,
@@ -87,8 +120,6 @@ export default defineComponent({
       serverOn,
       startServer,
       performCleanup,
-      listeningPort,
-      listeningAddress,
     };
   },
 });
@@ -123,20 +154,5 @@ export default defineComponent({
   left: 0;
   right: 0;
   visibility: hidden;
-}
-
-.ip-info {
-  position: absolute;
-  width: 100%;
-  left: 0;
-  top: 0;
-  padding: 0 1rem;
-  z-index: 100;
-  background-color: rgba(0, 150, 136, 0.2);
-
-  & > p {
-    margin: 0.4rem 0;
-    font-weight: 200;
-  }
 }
 </style>

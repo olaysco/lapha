@@ -17,3 +17,10 @@ export const NOTIFICATIONS = {
   MOVEMENT: "movement_detection_alert",
   NOISE: "sound_detection_alert",
 };
+
+export type ContentTypes = {
+  [key: string]: {
+    name: string;
+    type: string;
+  };
+};

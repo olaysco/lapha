@@ -1,13 +1,12 @@
 import { HTMLVideoElementWithCaptureStream, NOTIFICATIONS } from "./../types";
-import { ref, onUnmounted, onMounted } from "vue";
+import { ref, onUnmounted, onMounted, reactive } from "vue";
+import { globalState } from "./useGlobalState";
 import eventBus from "../events/bus";
 declare let cordova: any;
 
 export function useHostRTC() {
-  const listeningAddress = ref<Array<string>>([]);
   const serverOn = ref<boolean>(false);
   const streaming = ref<boolean>(false);
-  const listeningPort = ref<number>(9090);
   const wsserver = cordova.plugins.wsserver;
   const isDataChannelOpen = ref<boolean>(false);
   let dataChannel: RTCDataChannel;
@@ -16,7 +15,7 @@ export function useHostRTC() {
 
   const startServer = () => {
     wsserver.start(
-      listeningPort.value,
+      globalState().listeningPort,
       {
         onFailure: function (addr: string, port: string, reason: string) {
           console.log(
@@ -45,7 +44,7 @@ export function useHostRTC() {
       },
       function onStart(addr: string, port: string) {
         serverOn.value = true;
-        listeningAddress.value = [];
+        globalState().listeningAddress = [];
         console.log("Start Listening on", addr, ":", port);
         wsserver.getInterfaces(function (result: any) {
           for (const networkInterface in result) {
@@ -55,7 +54,7 @@ export function useHostRTC() {
               console.log("networkInterface", networkInterface);
               const ipv4 = result[networkInterface].ipv4Addresses;
               if (ipv4) {
-                listeningAddress.value.push(ipv4);
+                globalState().listeningAddress.push(ipv4);
               }
             }
           }
@@ -184,7 +183,5 @@ export function useHostRTC() {
     startServer,
     sendMessage,
     performCleanup,
-    listeningPort,
-    listeningAddress,
   };
 }
