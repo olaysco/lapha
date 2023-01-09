@@ -78,7 +78,7 @@ export function useJoinRTC() {
     if (msg.candidate) {
       try {
         console.log("receive ice " + msg.candidate);
-        peerConnection?.addIceCandidate(msg.candidate);
+        await peerConnection?.addIceCandidate(msg.candidate);
       } catch (error) {
         console.log(error);
       }
