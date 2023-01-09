@@ -155,6 +155,10 @@ export function useHostRTC() {
       streaming.value = false;
     }
     peerConnections.value = new Map();
+    globalState().listeningAddress.splice(
+      0,
+      globalState().listeningAddress.length
+    );
   };
 
   const setup = () => {

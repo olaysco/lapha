@@ -19,7 +19,7 @@
             <ion-col size="6"></ion-col>
             <ion-col size="2">
               <ion-button @click="presentDrawer" expand="block">
-                <ion-icon :icon="wifi"></ion-icon>
+                <ion-icon :icon="information"></ion-icon>
               </ion-button>
             </ion-col>
           </ion-row>
@@ -48,7 +48,7 @@ import {
   onIonViewDidEnter,
   onIonViewWillLeave,
 } from "@ionic/vue";
-import { wifi } from "ionicons/icons";
+import { information } from "ionicons/icons";
 import { defineComponent, onMounted, ref } from "vue";
 import { useHostRTC } from "../composables/useHostRTC";
 import { useCreateCamera } from "../composables/useCreateCamera";
@@ -111,7 +111,7 @@ export default defineComponent({
       connectionInformationPaneRef,
       capturePageRef,
       presentDrawer,
-      wifi,
+      information,
       showPane,
       canvasRef,
       videoRef,

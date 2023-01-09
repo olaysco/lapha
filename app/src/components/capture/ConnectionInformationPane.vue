@@ -5,12 +5,29 @@
         <div class="pane-header">
           <h1>Connection Status</h1>
         </div>
-        <div class="pane-body">
-          <div class="joined">
+        <div class="pane-body" v-show="listeningAddress.length < 1">
+          <div>
+            <p>
+              Connection is inactive <br />
+              To start streaming:
+            </p>
+            <ol>
+              <li>
+                Click on video record button to turn on your video feed, then a stream
+                button will appear on the screen.
+              </li>
+              <li>Click the stream button when you're ready to stream.</li>
+              <li>IP Address details to connect a guardian device, will appear here.</li>
+            </ol>
+          </div>
+        </div>
+        <div>
+          <div class="joined" v-show="listeningAddress.length > 0">
             <ion-list>
               <ion-item>
                 <ion-label>
                   <h4>IP address and port</h4>
+                  <p>IP Address and port to connect a guardian device.</p>
                   <p v-for="ip in listeningAddress" :key="ip">
                     {{ `${ip}:${listeningPort}` }}
                   </p>
@@ -19,6 +36,7 @@
               <ion-item>
                 <ion-label>
                   <h4>Browser Access</h4>
+                  <p>Web URL to access guardian mode from a browser.</p>
                   <p v-for="ip in listeningAddress" :key="ip">
                     {{ `${ip}:${currentWebPort}/guardian` }}
                   </p>
