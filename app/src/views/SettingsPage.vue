@@ -14,7 +14,7 @@
           <ion-list-header>
             <ion-label>Capture Settings</ion-label>
           </ion-list-header>
-          <ion-item>
+          <ion-item v-show="false">
             <ion-label>Noise Detection</ion-label>
             <ion-toggle slot="end" v-model="settings.noiseDetection"></ion-toggle>
           </ion-item>
