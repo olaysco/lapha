@@ -20,17 +20,26 @@ export function useCreateCamera() {
   });
 
   const initCamera = async () => {
-    if (isPlatform("android")) {
-      await getPermission([AndroidPermissions.PERMISSION.CAMERA]);
+    try {
+      if (isPlatform("android")) {
+        await getPermission([AndroidPermissions.PERMISSION.CAMERA]);
+      }
+      const localVideo = <HTMLVideoElementWithCaptureStream>(
+        document.getElementById("video")
+      );
+      stream.value = await navigator.mediaDevices.getUserMedia(
+        constraints.value
+      );
+      state.isMicOn = true;
+      state.isCameraOn = true;
+      localVideo.srcObject = stream.value;
+      localVideo.play().then(() => (localVideo.muted = true));
+      toast().showSuccess(
+        "Camera started, Click on the stream button to start live feed"
+      );
+    } catch (error) {
+      toast().showError("Unable to start camera.");
     }
-    const localVideo = <HTMLVideoElementWithCaptureStream>(
-      document.getElementById("video")
-    );
-    stream.value = await navigator.mediaDevices.getUserMedia(constraints.value);
-    state.isMicOn = true;
-    state.isCameraOn = true;
-    localVideo.srcObject = stream.value;
-    localVideo.play().then(() => (localVideo.muted = true));
   };
 
   const toggleStream = async () => {
