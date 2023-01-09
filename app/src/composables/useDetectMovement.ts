@@ -30,6 +30,7 @@ export function useDetectMovement() {
   const canvas = ref<HTMLCanvasElement>();
   const video = ref<HTMLVideoElement>();
   const timeoutID = ref<number>(0);
+  const lastNotificationTimestamp = ref<number>(0);
   const DIFFERENCE_COUNT_THRESHOLD = { min: 20, max: 100, current: 50 };
   const DIFFERENCE_THRESHOLD = { min: 25, max: 50, current: 25 };
 
@@ -139,15 +140,23 @@ export function useDetectMovement() {
   };
 
   const triggerAlert = () => {
-    //implement a form of throttle here, so we don't keep sending same alert every sec.
-    eventBus.emit(NOTIFICATIONS.MOVEMENT, {
-      data: canvas.value?.toDataURL(),
-    });
+    // Ensure a minimum of 1 mins delay between notifications.
+    const minSinceLastNotification = Math.round(
+      (Date.now() - lastNotificationTimestamp.value) / 60000
+    );
+    if (minSinceLastNotification > 1) {
+      eventBus.emit(NOTIFICATIONS.MOVEMENT, {
+        data: canvas.value?.toDataURL(),
+      });
+
+      lastNotificationTimestamp.value = Date.now();
+    }
   };
 
   onUnmounted(() => {
     if (timeoutID.value) {
       clearInterval(timeoutID.value);
+      lastNotificationTimestamp.value = 0;
     }
   });
 
