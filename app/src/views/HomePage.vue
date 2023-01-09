@@ -4,7 +4,7 @@
       <div class="custom-header">
         <div></div>
         <ion-nav-link router-direction="forward" :component="SettingsPage">
-          <ion-button router-link="/settings" fill="clear">
+          <ion-button router-link="/settings" fill="clear" v-if="isMobile">
             <ion-icon :icon="settings" size="medium"></ion-icon>
           </ion-button>
         </ion-nav-link>
