@@ -142,7 +142,7 @@ export function useDetectMovement() {
   const triggerAlert = () => {
     // Ensure a minimum of 1 mins delay between notifications.
     const minSinceLastNotification = Math.round(
-      (Date.now() - lastNotificationTimestamp.value) / 6000
+      (Date.now() - lastNotificationTimestamp.value) / 1000
     );
     if (minSinceLastNotification > 1) {
       eventBus.emit(NOTIFICATIONS.MOVEMENT, {
