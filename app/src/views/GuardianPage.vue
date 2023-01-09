@@ -13,9 +13,11 @@
           <ion-col></ion-col>
           <ion-col size="8"></ion-col>
           <ion-col>
-            <ion-button v-if="!hasJoin" @click="presentDrawer" v-html="`join`">
+            <ion-button
+              @click="presentDrawer"
+              v-html="`${!hasJoin ? 'Join' : 'Disconnect'}`"
+            >
             </ion-button>
-            <ion-button v-else @click="disconnectRTC" v-html="`disconnect`"> </ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
